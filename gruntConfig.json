@@ -1,7 +1,7 @@
 {
   "sapProtocol": "https",
   "sapHost": "r41z.ucc.ovgu.de",
-  "sapBspContainer": "ZVG_15D_41_42_PL",
+  "sapBspContainer": "ZVG_15D_41_42_P",
   "sapPackage": "ZVG_15D_41_42_HA",
   "sapTransport": "R41K908109",
   "sapAppName": "UI5 Produktliste",
