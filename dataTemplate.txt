@@ -1,0 +1,21 @@
+[
+  '{{repeat(140, 150)}}',
+  {
+    Matnr: '{{index(1000)}}',
+    Maktx: '{{lorem(1, "words")}}',
+    Mtart: '{{random("Rohstoffe", "Handelswaren")}}',
+    Wrkst: "werkst",
+    Stprs: '{{integer(10, 5000)}}',
+    Waers: "EUR",
+    Lbkum: '{{integer(100, 5000)}}',
+    Labst: '{{integer(0, 100)}}',
+    Meins: "base unit",
+    Brgew: '{{integer(20, 8000)}}',
+    Ntgew: function() {
+      return this.Brgew - 10;
+    },
+    Beskz: "procurement",
+    Aenam: '{{firstName()}} {{surname()}}',
+
+  }
+]
