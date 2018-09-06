@@ -52,20 +52,6 @@
                                 </fb:control>
                             </fb:FilterItem>
 
-                            <!--<fb:FilterItem name="D" label="Preis">-->
-                                <!--<fb:control>-->
-                                    <!--<Select-->
-                                            <!--id="slName"-->
-                                            <!--forceSelection="true"-->
-                                            <!--change="onSelectChange"-->
-                                            <!--items="{-->
-                                                    <!--path: 'product>/ProduktSet'-->
-                                                <!--}">-->
-                                        <!--<core:Item key="{product>Maktx}" text="{product>Maktx}"/>-->
-                                    <!--</Select>-->
-                                <!--</fb:control>-->
-                            <!--</fb:FilterItem>-->
-
                         </fb:filterItems>
                     </fb:FilterBar>
                 </f:content>
@@ -80,9 +66,13 @@
                     items="{
                             path: 'product>/ProduktSet'
                         }">
-                <Toolbar>
+                <headerToolbar>
+                    <Toolbar>
+                        <ToolbarSpacer/>
+                        <Button tooltip="View Settings" icon="sap-icon://drop-down-list" press="handleSortDialogButtonPressed" />
+                    </Toolbar>
+                </headerToolbar>
 
-                </Toolbar>
 
                 <columns>
                     <Column id="columnProductId" sortProperty="{product>Matnr}">
