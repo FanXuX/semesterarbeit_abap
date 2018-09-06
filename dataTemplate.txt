@@ -1,21 +1,34 @@
 [
-  '{{repeat(140, 150)}}',
+  '{{repeat(190, 250)}}',
   {
     Matnr: '{{index(1000)}}',
     Maktx: '{{lorem(1, "words")}}',
     Mtart: '{{random("Rohstoffe", "Handelswaren")}}',
-    Wrkst: "werkst",
+    Wrkst: '{{random("Werkstoff 1", "Werkstoff 2", "Werkstoff 3", "Werkstoff 4")}}',
     Stprs: '{{integer(10, 5000)}}',
     Waers: "EUR",
+    Mbrsh: '{{random("Branche 1", "Branche 2", "Branche 3", "Branche 4")}}',
+    Spart: '{{random("Sparte 1", "Sparte 2", "Sparte 3")}}',
     Lbkum: '{{integer(100, 5000)}}',
     Labst: '{{integer(0, 100)}}',
+    Gewei: "kg",
     Meins: "base unit",
     Brgew: '{{integer(20, 8000)}}',
     Ntgew: function() {
       return this.Brgew - 10;
     },
     Beskz: "procurement",
+    Matkl: '{{random("Warengruppe 1", "Warengruppe 2", "Warengruppe 3", "Warengruppe 4"), "Warengruppe 5"}}',
+    Groes: '{{integer(10, 500)}}',
+    Laeng: '{{integer(35, 80)}}',
+    Breit: '{{integer(15, 50)}}',
+    Hoehe: '{{integer(15, 60)}}',
+    Meabm: "cm",
+    Ersda: '{{date(new Date(2017, 0, 1), new Date(2018, 0, 1), "dd.MM.YYYY")}}',
     Aenam: '{{firstName()}} {{surname()}}',
+    Ernam: '{{firstName()}} {{surname()}}',
+    Laeda: '{{date(new Date(2000, 0, 1), new Date(2017, 0, 1), "dd.MM.YYYY")}}'
 
   }
+
 ]
