@@ -13,7 +13,7 @@
         <f:title>
             <f:DynamicPageTitle class="zvgPageTitle">
                 <f:heading>
-                    <vm:VariantManagement standardItemText="Produktliste">
+                    <vm:VariantManagement standardItemText="Produktlist">
                     </vm:VariantManagement>
                 </f:heading>
             </f:DynamicPageTitle>
@@ -69,7 +69,7 @@
                 <headerToolbar>
                     <Toolbar>
                         <ToolbarSpacer/>
-                        <Button tooltip="View Settings" icon="sap-icon://drop-down-list" press="handleSortDialogButtonPressed" />
+                        <Button tooltip="View Settings" icon="sap-icon://sort" press="handleSortDialogButtonPressed" />
                     </Toolbar>
                 </headerToolbar>
 
