@@ -7,6 +7,8 @@
             <ViewSettingsItem text="Produkt ID" key="Matnr" selected="true" />
             <ViewSettingsItem text="Produktname" key="Maktx" />
             <ViewSettingsItem text="Frei verwendbare Bestand" key="Lbkum" />
+            <!--TODO: date sorting update-->
+            <ViewSettingsItem text="Letzte Änderung" key="Laeda" />
             <ViewSettingsItem text="Preis" key="Stprs" />
         </sortItems>
 

@@ -23,4 +23,14 @@
         </content>
     </Page>
 
+    <!--<ObjectHeader-->
+            <!--binding="{/ProductCollection/0}"-->
+            <!--title="{product>Matnr}"-->
+            <!--condensed="true"-->
+            <!--numberUnit="{product>Waers}" >-->
+        <!--<attributes>-->
+            <!--<ObjectAttribute text="test" />-->
+        <!--</attributes>-->
+    <!--</ObjectHeader>-->
+
 </mvc:View>

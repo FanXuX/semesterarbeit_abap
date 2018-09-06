@@ -3,6 +3,7 @@
           controllerName="de.nak.productlist.controller.App"
           displayBlock="true">
 
+    <!--TODO: fix shell style and added user icon-->
     <Shell title="Produktübersicht">
         <App id="app"></App>
     </Shell>

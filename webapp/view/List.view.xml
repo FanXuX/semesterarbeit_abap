@@ -29,12 +29,14 @@
 
                             <fb:FilterItem name="A" label="Produkt ID">
                                 <fb:control>
+                                    <!--TODO: autocomplete-->
                                     <Input type="Text" change="onChange" placeholder="Produkt Id eingeben..."/>
                                 </fb:control>
                             </fb:FilterItem>
 
                             <fb:FilterItem name="B" label="Produktname">
                                 <fb:control>
+                                    <!--TODO: autocomplete-->
                                     <Input type="Text" change="onChange" placeholder="Produktname eingeben..."/>
                                 </fb:control>
                             </fb:FilterItem>
@@ -92,7 +94,7 @@
                     </Column>
                     <Column id="columnChangeDay">
                         <header>
-                            <Label text="Änderungsdatum"/>
+                            <Label text="Letzte Änderung"/>
                         </header>
                     </Column>
                     <Column id="columnPrice">
@@ -108,7 +110,7 @@
                             <Text text="{product>Matnr}"/>
                             <Text text="{product>Maktx}"/>
                             <Text text="{product>Lbkum}"/>
-                            <Text text="DD.MM.YYYY"/>
+                            <Text text="{product>Laeda}"/>
                             <Text text="{product>Stprs} {product>Waers}"/>
                         </cells>
                     </ColumnListItem>
