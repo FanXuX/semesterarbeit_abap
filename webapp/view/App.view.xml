@@ -3,6 +3,8 @@
           controllerName="de.nak.productlist.controller.App"
           displayBlock="true">
 
-    <App id="app"></App>
+    <Shell title="Produktübersicht">
+        <App id="app"></App>
+    </Shell>
 
 </mvc:View>

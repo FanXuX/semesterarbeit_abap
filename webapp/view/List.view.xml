@@ -1,24 +1,138 @@
 <mvc:View
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:f="sap.f"
+        xmlns:u="sap.ui.unified"
+        xmlns:fb="sap.ui.comp.filterbar"
+        xmlns:vm="sap.ui.comp.variants"
         controllerName='de.nak.productlist.controller.List'>
-    <Page title="{i18n>main.PageTitle}">
-        <content>
-            <List headerText="{i18n>main.headerText}"
-                  items="{ path: 'product>/ProduktSet'}"
-                  growing="true"
-                  growingThreshold="100"
-                  enableBusyIndicator="true">
-                <headerToolbar>
-                    <Toolbar>
-                        <Title text="{i18n>main.header}" level="H2"/>
-                    </Toolbar>
-                </headerToolbar>
-                <StandardListItem title="{product>Matnr}"
-                                  description="{product>Maktx}"
-                                  press="onItemPress"
-                                  type="Navigation"/>
-            </List>
-        </content>
-    </Page>
+
+    <f:DynamicPage id="dynamicPageId" headerExpanded="{/headerExpanded}">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle class="zvgPageTitle">
+                <f:heading>
+                    <vm:VariantManagement standardItemText="Produktliste">
+                    </vm:VariantManagement>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <f:content>
+                    <fb:FilterBar reset="onReset" search="onSearch" useToolbar="false" showGoOnFB="false">
+
+                        <fb:filterItems>
+
+                            <fb:FilterItem name="A" label="Produkt ID">
+                                <fb:control>
+                                    <Input type="Text" change="onChange" placeholder="Produkt Id eingeben..."/>
+                                </fb:control>
+                            </fb:FilterItem>
+
+                            <fb:FilterItem name="B" label="Produktname">
+                                <fb:control>
+                                    <Input type="Text" change="onChange" placeholder="Produktname eingeben..."/>
+                                </fb:control>
+                            </fb:FilterItem>
+
+                            <fb:FilterItem name="C" label="Preis">
+                                <fb:control>
+                                    <ComboBox type="Text" change="onChange" placeholder="Preisgrenze eingeben">
+                                        <items>
+                                            <core:Item key="001" text="unter 50 €"/>
+                                            <core:Item key="002" text="50 bis 100 €"/>
+                                            <core:Item key="003" text="100 bis 500 €"/>
+                                            <core:Item key="004" text="über 500 €"/>
+                                        </items>
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterItem>
+
+                            <!--<fb:FilterItem name="D" label="Preis">-->
+                                <!--<fb:control>-->
+                                    <!--<Select-->
+                                            <!--id="slName"-->
+                                            <!--forceSelection="true"-->
+                                            <!--change="onSelectChange"-->
+                                            <!--items="{-->
+                                                    <!--path: 'product>/ProduktSet'-->
+                                                <!--}">-->
+                                        <!--<core:Item key="{product>Maktx}" text="{product>Maktx}"/>-->
+                                    <!--</Select>-->
+                                <!--</fb:control>-->
+                            <!--</fb:FilterItem>-->
+
+                        </fb:filterItems>
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+
+        <!-- DynamicPage Content -->
+        <f:content>
+            <Table
+                    id="idProductsTable"
+                    inset="false"
+                    items="{
+                            path: 'product>/ProduktSet'
+                        }">
+                <Toolbar>
+
+                </Toolbar>
+
+                <columns>
+                    <Column id="columnProductId" sortProperty="{product>Matnr}">
+                        <header>
+                            <Label text="Produkt ID" id="label0"/>
+                        </header>
+                    </Column>
+                    <Column id="columnProductname">
+                        <header>
+                            <Label text="Produktname" id="label1"/>
+                        </header>
+                    </Column>
+                    <Column id="columnUnrestrictedStock">
+                        <header>
+                            <Label text="Frei verwendbare Bestand" id="label2"/>
+                        </header>
+                    </Column>
+                    <Column id="columnChangeDay">
+                        <header>
+                            <Label text="Änderungsdatum"/>
+                        </header>
+                    </Column>
+                    <Column id="columnPrice">
+                        <header>
+                            <Label text="Standardpreis" id="label3"/>
+                        </header>
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem type="Active" id="item0" press="onItemPress">
+                        <cells>
+                            <Text text="{product>Matnr}"/>
+                            <Text text="{product>Maktx}"/>
+                            <Text text="{product>Lbkum}"/>
+                            <Text text="DD.MM.YYYY"/>
+                            <Text text="{product>Stprs} {product>Waers}"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </f:content>
+
+        <!-- DynamicPage Footer -->
+        <f:footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button type="Accept" text="Accept"/>
+                <Button type="Reject" text="Reject"/>
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
 </mvc:View>
