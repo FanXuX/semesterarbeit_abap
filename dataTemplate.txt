@@ -1,7 +1,7 @@
 [
   '{{repeat(190, 250)}}',
   {
-    Matnr: '{{index(1000)}}',
+    Matnr: '{{objectId()}}',
     Maktx: '{{lorem(1, "words")}}',
     Mtart: '{{random("Rohstoffe", "Handelswaren")}}',
     Wrkst: '{{random("Werkstoff 1", "Werkstoff 2", "Werkstoff 3", "Werkstoff 4")}}',
@@ -30,5 +30,7 @@
     Laeda: '{{date(new Date(2000, 0, 1), new Date(2017, 0, 1), "dd.MM.YYYY")}}'
 
   }
+
+
 
 ]
