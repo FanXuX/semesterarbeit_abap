@@ -1,15 +1,16 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "de/nak/productlist/controller/BaseController",
     'sap/ui/model/Filter',
     'sap/ui/model/Sorter'
-], function (Controller, Sorter) {
+], function (BaseController, Sorter) {
     "use strict";
-    return Controller.extend("de.nak.productlist.controller.List", {
+    return BaseController.extend("de.nak.productlist.controller.List", {
 
         _oDialog: null,
 
         onInit: function () {
 
+            // prepare functions for grouping
             this.mGroupFunctions = {
                 Maktx: function(oContext) {
                     var name = oContext.getProperty("Maktx");
@@ -40,20 +41,31 @@ sap.ui.define([
             };
         },
 
+        /**
+         * close view and dialog
+         */
         onExit : function () {
             if (this._oDialog) {
                 this._oDialog.destroy();
             }
         },
 
+        /**
+         * Navigate to DetailView
+         * @param oEvent
+         */
         onItemPress : function(oEvent){
             var oItem = oEvent.getSource();
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("detail", {
-                path : oItem.getBindingContext("product").getPath().substr(1)
+            let context = oItem.getBindingContext("product");
+            this.getRouter().navTo("detail", {
+                path : context.getModel().getObject(context.getPath()).Matnr
             });
         },
 
+        /**
+         * Open SortDialog
+         * @param oEvent
+         */
         handleSortDialogButtonPressed: function (oEvent) {
             if (!this._oDialog) {
                 this._oDialog = sap.ui.xmlfragment("de.nak.productlist.fragment.SortDialog", this);
@@ -63,6 +75,10 @@ sap.ui.define([
             this._oDialog.open();
         },
 
+        /**
+         * Execute Sorting with group function
+         * @param oEvent
+         */
         handleConfirm: function(oEvent) {
 
             var oView = this.getView();
@@ -71,8 +87,6 @@ sap.ui.define([
             var mParams = oEvent.getParameters();
             var oBinding = oTable.getBinding("items");
 
-            // apply sorter to binding
-            // (grouping comes before sorting)
             var sPath;
             var bDescending;
             var vGroup;

@@ -39,7 +39,17 @@
     "dependencies": {
       "minUI5Version": "1.30",
       "libs": {
-        "sap.m": {}
+        "sap.ui.core": {
+        },
+        "sap.m": {
+        },
+        "sap.f": {
+        },
+        "sap.ushell": {
+        },
+        "sap.collaboration": {
+          "lazy": true
+        }
       }
     },
     "routing": {
@@ -80,6 +90,7 @@
       },
       "product":{
         "dataSource": "productService",
+        "preload": true,
         "settings":{
           "useBatch":false
         }

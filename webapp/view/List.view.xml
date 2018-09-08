@@ -9,7 +9,7 @@
         controllerName='de.nak.productlist.controller.List'>
 
     <f:DynamicPage id="dynamicPageId" headerExpanded="{/headerExpanded}">
-        <!-- DynamicPage Title -->
+
         <f:title>
             <f:DynamicPageTitle class="zvgPageTitle">
                 <f:heading>
@@ -19,29 +19,26 @@
             </f:DynamicPageTitle>
         </f:title>
 
-        <!-- DynamicPage Header -->
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
+
+                    <!--Standard FilterBar with FilterItem productId, productName and standardPrice-->
                     <fb:FilterBar reset="onReset" search="onSearch" useToolbar="false" showGoOnFB="false">
-
                         <fb:filterItems>
-
-                            <fb:FilterItem name="A" label="Produkt ID">
+                            <fb:FilterItem name="A" label="{i18n>ProductId}">
                                 <fb:control>
                                     <!--TODO: autocomplete-->
                                     <Input type="Text" change="onChange" placeholder="Produkt Id eingeben..."/>
                                 </fb:control>
                             </fb:FilterItem>
-
-                            <fb:FilterItem name="B" label="Produktname">
+                            <fb:FilterItem name="B" label="{i18n>ProductName}">
                                 <fb:control>
                                     <!--TODO: autocomplete-->
                                     <Input type="Text" change="onChange" placeholder="Produktname eingeben..."/>
                                 </fb:control>
                             </fb:FilterItem>
-
-                            <fb:FilterItem name="C" label="Preis">
+                            <fb:FilterItem name="C" label="{i18n>StandardPrice}">
                                 <fb:control>
                                     <ComboBox type="Text" change="onChange" placeholder="Preisgrenze eingeben">
                                         <items>
@@ -60,7 +57,6 @@
             </f:DynamicPageHeader>
         </f:header>
 
-        <!-- DynamicPage Content -->
         <f:content>
             <Table
                     id="idProductsTable"
@@ -118,7 +114,6 @@
             </Table>
         </f:content>
 
-        <!-- DynamicPage Footer -->
         <f:footer>
             <OverflowToolbar>
                 <ToolbarSpacer/>
@@ -126,5 +121,6 @@
                 <Button type="Reject" text="Reject"/>
             </OverflowToolbar>
         </f:footer>
+
     </f:DynamicPage>
 </mvc:View>

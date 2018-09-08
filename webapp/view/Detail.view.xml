@@ -9,7 +9,9 @@
     <semantic:SemanticPage
             id="page"
             headerPinnable="false"
-            toggleHeaderOnTitleClick="false">
+            toggleHeaderOnTitleClick="false"
+            busy="{detailView>/busy}"
+            busyIndicatorDelay="{detailView>/delay}">
 
         <semantic:titleHeading>
             <Title text="{product>Maktx}"/>
@@ -26,19 +28,19 @@
                             title="{i18n>StandardPrice}"
                             text="{product>Stprs} {product>Waers}"/>
                 </Panel>
-                <Panel backgroundDesign="Transparent">
-                    <ObjectNumber
-                            id="objectHeader"
-                            textAlign="End"
-                            unit="{product>Meins}"
-                            state="{
-							path: 'UnitsInStock',
-							formatter: '.formatter.quantityState'}"
-                            number="{
-							path: 'UnitsInStock',
-							formatter: '.formatter.numberUnit'}">
-                    </ObjectNumber>
-                </Panel>
+                <!--<Panel backgroundDesign="Transparent">-->
+                    <!--<ObjectNumber-->
+                            <!--id="objectHeader"-->
+                            <!--textAlign="End"-->
+                            <!--unit="{product>Meins}"-->
+                            <!--state="{-->
+							<!--path: 'UnitsInStock',-->
+							<!--formatter: '.formatter.quantityState'}"-->
+                            <!--number="{-->
+							<!--path: 'UnitsInStock',-->
+							<!--formatter: '.formatter.numberUnit'}">-->
+                    <!--</ObjectNumber>-->
+                <!--</Panel>-->
 
             </FlexBox>
         </semantic:headerContent>
@@ -116,10 +118,7 @@
                         </f:SimpleForm>
                     </content>
                 </Panel>
-                <!--<Sections>-->
-                    <!--<ObjectPageSection title="Section 2">-->
-                    <!--</ObjectPageSection>-->
-                <!--</Sections>-->
+
             </l:VerticalLayout>
 
 
