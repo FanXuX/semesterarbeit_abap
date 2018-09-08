@@ -22,10 +22,10 @@
                     justifyContent="SpaceBetween">
                 <Panel backgroundDesign="Transparent">
                     <ObjectAttribute
-                            title="{i18n>ProductId}"
+                            title="{i18n>productId}"
                             text="{product>Matnr}"/>
                     <ObjectAttribute
-                            title="{i18n>StandardPrice}"
+                            title="{i18n>stdPrice}"
                             text="{product>Stprs} {product>Waers}"/>
                 </Panel>
                 <!--<Panel backgroundDesign="Transparent">-->
@@ -48,7 +48,7 @@
             <l:VerticalLayout width="100%">
                 <Panel
                         backgroundDesign="Transparent"
-                        headerText="{i18n>GeneralInformation}">
+                        headerText="{i18n>generalInformation}">
                     <content>
                         <f:SimpleForm
                                 minWidth="1024"
@@ -62,11 +62,11 @@
                                 columnsL="1"
                                 columnsM="1">
                             <f:content>
-                                <Label text="{i18n>MaterialType}"/>
+                                <Label text="{i18n>materialType}"/>
                                 <Text text="{product>Mtart}"/>
-                                <Label text="{i18n>Branche}"/>
+                                <Label text="{i18n>branche}"/>
                                 <Text text="{product>Mbrsh}"/>
-                                <Label text="{i18n>Sector}"/>
+                                <Label text="{i18n>sector}"/>
                                 <Text text="{product>Spart}"/>
                             </f:content>
                         </f:SimpleForm>
@@ -74,7 +74,7 @@
                 </Panel>
                 <Panel
                         backgroundDesign="Transparent"
-                        headerText="{i18n>TechnicalData}">
+                        headerText="{i18n>technicalData}">
                     <content>
                         <f:SimpleForm
                                 minWidth="1024"
@@ -88,11 +88,11 @@
                                 columnsL="1"
                                 columnsM="1">
                             <f:content>
-                                <Label text="{i18n>Length}"/>
+                                <Label text="{i18n>length}"/>
                                 <Text text="{product>Laeng} {product>Meabm}"/>
-                                <Label text="{i18n>Width}"/>
+                                <Label text="{i18n>width}"/>
                                 <Text text="{product>Breit} {product>Meabm}"/>
-                                <Label text="{i18n>Height}"/>
+                                <Label text="{i18n>height}"/>
                                 <Text text="{product>Hoehe} {product>Meabm}"/>
                             </f:content>
                         </f:SimpleForm>
@@ -110,9 +110,9 @@
                                 columnsM="1">
                             <f:content>
 
-                                <Label text="{i18n>GrossWeight}"/>
+                                <Label text="{i18n>grossWeight}"/>
                                 <Text text="{product>Brgew} {product>Gewei}"/>
-                                <Label text="{i18n>NetWeight}"/>
+                                <Label text="{i18n>netWeight}"/>
                                 <Text text="{product>Ntgew} {product>Gewei}"/>
                             </f:content>
                         </f:SimpleForm>
