@@ -4,7 +4,6 @@
         xmlns:core="sap.ui.core"
         xmlns:f="sap.f"
         xmlns:fb="sap.ui.comp.filterbar"
-        xmlns:vm="sap.ui.comp.variants"
         controllerName='de.nak.productlist.controller.List'>
 
     <f:DynamicPage id="dynamicPageId" headerExpanded="{/headerExpanded}">
@@ -12,9 +11,14 @@
         <f:title>
             <f:DynamicPageTitle>
                 <f:heading>
-                    <vm:VariantManagement standardItemText="{i18n>listPageTitle}">
-                    </vm:VariantManagement>
+                    <Title text="{i18n>listPageTitle}"/>
                 </f:heading>
+                <f:expandedContent>
+                    <Label text="{i18n>listPageSubheading}"/>
+                </f:expandedContent>
+                <f:snappedContent>
+                    <Label text="{i18n>listPageSubheading}"/>
+                </f:snappedContent>
             </f:DynamicPageTitle>
         </f:title>
 
@@ -60,13 +64,13 @@
                     items="{
                             path: 'product>/ProduktSet'
                         }">
+
                 <headerToolbar>
                     <Toolbar>
                         <ToolbarSpacer/>
                         <Button tooltip="View Settings" icon="sap-icon://sort" press="handleSortDialogButtonPressed" />
                     </Toolbar>
                 </headerToolbar>
-
 
                 <columns>
                     <Column id="columnProductId" sortProperty="{product>Matnr}">
@@ -107,6 +111,7 @@
                         </cells>
                     </ColumnListItem>
                 </items>
+
             </Table>
         </f:content>
 

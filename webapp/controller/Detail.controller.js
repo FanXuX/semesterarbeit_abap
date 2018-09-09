@@ -7,7 +7,7 @@ sap.ui.define([
     return BaseController.extend("de.nak.productlist.controller.Detail", {
 
         /**
-         * Initialize DetailView with delay function
+         * initialize detail view with delay function
          */
         onInit: function () {
 
