@@ -155,6 +155,14 @@ sap.ui.define([
             this._oDialog.open();
         },
 
+        onReset: function() {
+            this.oProductId.setValue();
+            this.oProductName.setValue();
+            this.oStdPrice.setValue();
+
+            this.onFilterChange();
+        },
+
         /**
          * filter list
          */

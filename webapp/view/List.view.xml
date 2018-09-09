@@ -24,7 +24,7 @@
                 <f:content>
 
                     <!--Standard FilterBar with FilterItem productId, productName and standardPrice-->
-                    <fb:FilterBar reset="onReset" search="onFilterChange" useToolbar="true" showGoOnFB="true">
+                    <fb:FilterBar clear="onReset" search="onFilterChange" useToolbar="true" showGoOnFB="true" showFilterConfiguration="false" showClearOnFB="true">
                         <fb:filterItems>
                             <fb:FilterItem name="A" label="{i18n>productId}">
                                 <fb:control>
