@@ -28,19 +28,6 @@
                             title="{i18n>stdPrice}"
                             text="{product>Stprs} {product>Waers}"/>
                 </Panel>
-                <!--<Panel backgroundDesign="Transparent">-->
-                    <!--<ObjectNumber-->
-                            <!--id="objectHeader"-->
-                            <!--textAlign="End"-->
-                            <!--unit="{product>Meins}"-->
-                            <!--state="{-->
-							<!--path: 'UnitsInStock',-->
-							<!--formatter: '.formatter.quantityState'}"-->
-                            <!--number="{-->
-							<!--path: 'UnitsInStock',-->
-							<!--formatter: '.formatter.numberUnit'}">-->
-                    <!--</ObjectNumber>-->
-                <!--</Panel>-->
 
             </FlexBox>
         </semantic:headerContent>
@@ -128,26 +115,6 @@
         </semantic:editAction>
     </semantic:SemanticPage>
 
-
-    <!--<Page title="{i18n>detail.PageTitel}"-->
-    <!--showNavButton="true"-->
-    <!--navButtonPress="onNavButtonPress">-->
-    <!--<content>-->
-    <!--<Toolbar>-->
-    <!--<Title text="{i18n>detail.titel}" level="H2"/>-->
-    <!--</Toolbar>-->
-    <!--<f:SimpleForm layou="ResponsiveGridLayout">-->
-    <!--<f:content>-->
-    <!--<Label text="{i18n>Name}" labelFor="inputName"/>-->
-    <!--<Input id="inputName" value="{product>Matnr}" enabled="false"/>-->
-    <!--<Label text="{i18n>Text}" labelFor="inputText"/>-->
-    <!--<TextArea id="inputText" value="{product>Maktx}" width="100%" enabled="false"/>-->
-    <!--<Label text="{i18n>Hotel}" labelFor="inputData"/>-->
-    <!--<Input id="inputData" value="{product>Mtart}" enabled="false"/>-->
-    <!--</f:content>-->
-    <!--</f:SimpleForm>-->
-    <!--</content>-->
-    <!--</Page>-->
 
 
 </mvc:View>
