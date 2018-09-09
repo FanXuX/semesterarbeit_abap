@@ -16,25 +16,49 @@ sap.ui.define([
                 return this.getView().byId(id);
             }.bind(this);
 
-            const fnExtractTextValue = function(edit) {
+            const fnExtractTextFilterValue = function(edit) {
                 return {
                     value() {
                         return edit.getValue();
+                    },
+                    op() {
+                        return sap.ui.model.FilterOperator.Contains;
                     }
                 };
             };
 
-            // FIXME
-            this.aKeys = ['Matnr', 'Maktx', 'Stprs'];
+            const fnExtractPriceFilterValue = function(combo) {
+                return {
+                    value() {
+                        switch (combo.getSelectedKey()) {
+                            case "001":
+                                return [0, 50];
+
+                            case "002":
+                                return [50, 100];
+                            case "003":
+                                return [100, 500];
+                            case "004":
+                                return [500, Number.MAX_VALUE];
+                            default:
+                                return [];
+                        }
+                    },
+                    op() {
+                        return sap.ui.model.FilterOperator.BT;
+                    }
+                };
+            };
+
             this.oProductId = fnGetById('eProductId');
             this.oProductName = fnGetById('eProductName');
             this.oStdPrice = fnGetById('slStdPrice');
             this.oTable = fnGetById('idProductsTable');
 
             this.filterItems = {
-                'Matnr': fnExtractTextValue(this.oProductId),
-                'Maktx': fnExtractTextValue(this.oProductName)
-                //TODO price
+                'Matnr': fnExtractTextFilterValue(this.oProductId),
+                'Maktx': fnExtractTextFilterValue(this.oProductName),
+                'Stprs': fnExtractPriceFilterValue(this.oStdPrice)
             };
 
             // prepare functions for grouping
@@ -131,12 +155,25 @@ sap.ui.define([
             this._oDialog.open();
         },
 
+        /**
+         * filter list
+         */
         onFilterChange: function() {
 
             const fnDoFilter = function(filterValueMap){
 
                 const filterList = _.map(filterValueMap, function(v, k) {
-                    return new sap.ui.model.Filter(k, sap.ui.model.FilterOperator.Contains, [v]);
+                    switch (v.op) {
+                        case sap.ui.model.FilterOperator.Contains:
+                            return new sap.ui.model.Filter(k, v.op, [v.value]);
+                        case sap.ui.model.FilterOperator.BT:
+                            return new sap.ui.model.Filter({
+                                path: k,
+                                operator: v.op,
+                                value1: v.value[0],
+                                value2: v.value[1]
+                            });
+                    }
                 });
 
                 this.oTable.getBinding('items').filter(filterList)
@@ -144,47 +181,17 @@ sap.ui.define([
 
             const fnExtractFilterValues = function(filterItemsMap) {
                 return _.transform(filterItemsMap, function(acc, v, k) {
-                    if (v.value()) {
-                        acc[k] = v.value();
+                    if ((_.isArray(v.value()) && !_.isEmpty(v.value()) || (!_.isArray(v.value()) && v.value()))) {
+                        acc[k] = {
+                            value: v.value(),
+                            op: v.op()
+                        };
                     }
                 }, {});
             }.bind(this);
 
 
             fnDoFilter(fnExtractFilterValues(this.filterItems));
-            return;
-
-            const aCurrentFilterValues = [];
-
-            const fnFilterTable = function() {
-                const fnGetFilters = function (aCurrentFilterValues) {
-                    return this.aKeys.map(function (sCriteria, i) {
-                        return new sap.ui.model.Filter(sCriteria, sap.ui.model.FilterOperator.Contains, aCurrentFilterValues[i]);
-                    });
-                }.bind(this);
-                const fnGetFilterCriteria = function (aCurrentFilterValues){
-                    return this.aKeys.filter(function (el, i) {
-                        if (aCurrentFilterValues[i] !== "") return  el;
-                    });
-                }.bind(this);
-
-                this.oTable.getBinding('items').filter(fnGetFilters(aCurrentFilterValues));
-
-                // this.updateFilterCriterias(fnGetFilterCriteria(aCurrentFilterValues));
-            }.bind(this);
-
-            const fnGetKey = function(item) {
-                return item.getSelectedItem() ? item.getSelectedItem().getKey() : "";
-            }.bind(this);
-
-            aCurrentFilterValues.push(fnGetKey(this.oProductId));
-            aCurrentFilterValues.push(fnGetKey(this.oProductName));
-            aCurrentFilterValues.push(fnGetKey(this.oStdPrice));
-
-            fnFilterTable(aCurrentFilterValues);
-        },
-
-
-
+        }
     })
 });
