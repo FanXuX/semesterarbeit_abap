@@ -24,23 +24,23 @@
                 <f:content>
 
                     <!--Standard FilterBar with FilterItem productId, productName and standardPrice-->
-                    <fb:FilterBar reset="onReset" search="onSearch" useToolbar="true" showGoOnFB="true">
+                    <fb:FilterBar reset="onReset" search="onFilterChange" useToolbar="true" showGoOnFB="true">
                         <fb:filterItems>
                             <fb:FilterItem name="A" label="{i18n>productId}">
                                 <fb:control>
                                     <!--TODO: autocomplete-->
-                                    <Input type="Text" id="eProductId" change="onFilterChange" placeholder="{i18n>productIdPlaceholder}"/>
+                                    <Input type="Text" id="eProductId" placeholder="{i18n>productIdPlaceholder}"/>
                                 </fb:control>
                             </fb:FilterItem>
                             <fb:FilterItem name="B" label="{i18n>productName}">
                                 <fb:control>
                                     <!--TODO: autocomplete-->
-                                    <Input type="Text" id="eProductName" change="onFilterChange" placeholder="{i18n>productNamePlaceholder}"/>
+                                    <Input type="Text" id="eProductName" placeholder="{i18n>productNamePlaceholder}"/>
                                 </fb:control>
                             </fb:FilterItem>
                             <fb:FilterItem name="C" label="{i18n>stdPrice}">
                                 <fb:control>
-                                    <ComboBox type="Text" id="slStdPrice" change="onFilterChange" placeholder="{i18n>stdPricePlaceholder}">
+                                    <ComboBox type="Text" id="slStdPrice" placeholder="{i18n>stdPricePlaceholder}">
                                         <items>
                                             <core:Item key="001" text="{i18n>stdPriceCategory1}"/>
                                             <core:Item key="002" text="{i18n>stdPriceCategory2}"/>
