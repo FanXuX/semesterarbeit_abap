@@ -1,153 +1,100 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc"
-          xmlns="sap.m"
+          xmlns:m="sap.m"
+          xmlns="sap.uxap"
           xmlns:semantic="sap.f.semantic"
           xmlns:f="sap.ui.layout.form"
           xmlns:l="sap.ui.layout"
           controllerName="de.nak.productlist.controller.Detail">
 
 
-    <semantic:SemanticPage
-            id="page"
-            headerPinnable="false"
-            toggleHeaderOnTitleClick="false"
-            busy="{detailView>/busy}"
-            busyIndicatorDelay="{detailView>/delay}">
+    <ObjectPageLayout id="detailPageLayout">
+        <headerTitle>
+            <ObjectPageHeader id="detailViewHeader"
+                              headerDesign="Light"
+                              objectTitle="{product>Maktx}"
+                              showNavButton="true"
+                              navButtonPress="onNavButtonPress">
+                <actions>
+                    <ObjectPageHeaderActionButton icon="sap-icon://edit" text="edit" importance="Medium"
+                                                  tooltip="edit"/>
+                    <ObjectPageHeaderActionButton icon="sap-icon://refresh" text="{buttons>/text}" tooltip="refresh"/>
+                </actions>
+            </ObjectPageHeader>
+        </headerTitle>
 
-        <semantic:titleHeading>
-            <Title text="{product>Maktx}"/>
-        </semantic:titleHeading>
-        <semantic:headerContent>
-            <FlexBox
-                    alignItems="Start"
-                    justifyContent="SpaceBetween">
-                <Panel backgroundDesign="Transparent">
-                    <ObjectAttribute
-                            title="{i18n>productId}"
-                            text="{product>Matnr}"/>
-                    <ObjectAttribute
-                            title="{i18n>stdPrice}"
-                            text="{product>Stprs} {product>Waers}"/>
-                </Panel>
-                <!--<Panel backgroundDesign="Transparent">-->
-                    <!--<ObjectNumber-->
-                            <!--id="objectHeader"-->
-                            <!--textAlign="End"-->
-                            <!--unit="{product>Meins}"-->
-                            <!--state="{-->
-							<!--path: 'UnitsInStock',-->
-							<!--formatter: '.formatter.quantityState'}"-->
-                            <!--number="{-->
-							<!--path: 'UnitsInStock',-->
-							<!--formatter: '.formatter.numberUnit'}">-->
-                    <!--</ObjectNumber>-->
-                <!--</Panel>-->
-
-            </FlexBox>
-        </semantic:headerContent>
-        <semantic:content>
-            <l:VerticalLayout width="100%">
-                <Panel
-                        backgroundDesign="Transparent"
-                        headerText="{i18n>generalInformation}">
-                    <content>
-                        <f:SimpleForm
-                                minWidth="1024"
-                                maxContainerCols="2"
-                                editable="false"
-                                layout="ResponsiveGridLayout"
-                                labelSpanL="3"
-                                labelSpanM="3"
-                                emptySpanL="4"
-                                emptySpanM="4"
-                                columnsL="1"
-                                columnsM="1">
-                            <f:content>
-                                <Label text="{i18n>materialType}"/>
-                                <Text text="{product>Mtart}"/>
-                                <Label text="{i18n>branche}"/>
-                                <Text text="{product>Mbrsh}"/>
-                                <Label text="{i18n>sector}"/>
-                                <Text text="{product>Spart}"/>
-                            </f:content>
-                        </f:SimpleForm>
-                    </content>
-                </Panel>
-                <Panel
-                        backgroundDesign="Transparent"
-                        headerText="{i18n>technicalData}">
-                    <content>
-                        <f:SimpleForm
-                                minWidth="1024"
-                                maxContainerCols="2"
-                                editable="false"
-                                layout="ResponsiveGridLayout"
-                                labelSpanL="3"
-                                labelSpanM="3"
-                                emptySpanL="4"
-                                emptySpanM="4"
-                                columnsL="1"
-                                columnsM="1">
-                            <f:content>
-                                <Label text="{i18n>length}"/>
-                                <Text text="{product>Laeng} {product>Meabm}"/>
-                                <Label text="{i18n>width}"/>
-                                <Text text="{product>Breit} {product>Meabm}"/>
-                                <Label text="{i18n>height}"/>
-                                <Text text="{product>Hoehe} {product>Meabm}"/>
-                            </f:content>
-                        </f:SimpleForm>
-
-                        <f:SimpleForm
-                                minWidth="1024"
-                                maxContainerCols="2"
-                                editable="false"
-                                layout="ResponsiveGridLayout"
-                                labelSpanL="3"
-                                labelSpanM="3"
-                                emptySpanL="4"
-                                emptySpanM="4"
-                                columnsL="1"
-                                columnsM="1">
-                            <f:content>
-
-                                <Label text="{i18n>grossWeight}"/>
-                                <Text text="{product>Brgew} {product>Gewei}"/>
-                                <Label text="{i18n>netWeight}"/>
-                                <Text text="{product>Ntgew} {product>Gewei}"/>
-                            </f:content>
-                        </f:SimpleForm>
-                    </content>
-                </Panel>
-
+        <headerContent>
+            <l:VerticalLayout>
+                <m:ObjectStatus title="{i18n>productId}" text="{product>Matnr}"/>
+                <m:ObjectStatus title="{i18n>stdPrice}" text="{product>Matnr}"/>
+                <m:ObjectStatus title="{i18n>createdBy}" text="{product>Ernam}"/>
+                <m:ObjectStatus title="{i18n>lastUpdate}" text="{product>Laeda}"/>
+                <m:ObjectStatus title="{i18n>editedBy}" text="{product>Aenam}"/>
             </l:VerticalLayout>
+            <m:ObjectStatus text="{i18n>totalInventory}" state="Error"/>
+            <m:ObjectNumber number="{product>Lbkum}" numberunit="{product>Meins}"/>
+            <l:VerticalLayout>
+                <l:layoutData>
+                    <ObjectPageHeaderLayoutData
+                            showSeparatorAfter="false"/>
+                </l:layoutData>
+                <m:Label text="PC, Unrestricted-Use Stock"/>
+                <m:ObjectNumber number="{product>Labst}" numberUnit="{product>Meins}"/>
+            </l:VerticalLayout>
+        </headerContent>
+
+        <sections>
+            <ObjectPageSection title="{i18n>generalInformation}">
+                <subSections>
+                    <ObjectPageSubSection title="{i18n>generalInformation}">
+                        <blocks>
+                            <f:SimpleForm layout="ResponsiveGridLayout" editable="false">
+                                <m:Label text="{i18n>materialType}"/>
+                                <m:Text text="{product>Mtart}"/>
+                                <m:Label text="{i18n>basicMaterial}"/>
+                                <m:Text text="{product>Wrkst}"/>
+                            </f:SimpleForm>
+
+                            <f:SimpleForm layout="ResponsiveGridLayout" editable="false">
+                                <m:Label text="{i18n>branche}"/>
+                                <m:Text text="{product>Mbrsh}"/>
+                                <m:Label text="{i18n>sector}"/>
+                                <m:Text text="{product>Spart}"/>
+                            </f:SimpleForm>
+                        </blocks>
+                    </ObjectPageSubSection>
 
 
-        </semantic:content>
-        <semantic:editAction>
-            <semantic:EditAction press="onSemanticButtonPress"/>
-        </semantic:editAction>
-    </semantic:SemanticPage>
+                </subSections>
+            </ObjectPageSection>
 
+            <ObjectPageSection title="{i18n>technicalData}">
+                <subSections>
+                    <ObjectPageSubSection title="{i18n>technicalData}">
+                        <blocks>
+                            <f:SimpleForm layout="ResponsiveGridLayout" editable="false" >
+                                <m:Label text="{i18n>length}"/>
+                                <m:Text text="{product>Laeng} {product>Meabm}"/>
+                                <m:Label text="{i18n>width}"/>
+                                <m:Text text="{product>Breit} {product>Meabm}"/>
+                                <m:Label text="{i18n>height}"/>
+                                <m:Text text="{product>Hoehe} {product>Meabm}"/>
+                            </f:SimpleForm>
 
-    <!--<Page title="{i18n>detail.PageTitel}"-->
-    <!--showNavButton="true"-->
-    <!--navButtonPress="onNavButtonPress">-->
-    <!--<content>-->
-    <!--<Toolbar>-->
-    <!--<Title text="{i18n>detail.titel}" level="H2"/>-->
-    <!--</Toolbar>-->
-    <!--<f:SimpleForm layou="ResponsiveGridLayout">-->
-    <!--<f:content>-->
-    <!--<Label text="{i18n>Name}" labelFor="inputName"/>-->
-    <!--<Input id="inputName" value="{product>Matnr}" enabled="false"/>-->
-    <!--<Label text="{i18n>Text}" labelFor="inputText"/>-->
-    <!--<TextArea id="inputText" value="{product>Maktx}" width="100%" enabled="false"/>-->
-    <!--<Label text="{i18n>Hotel}" labelFor="inputData"/>-->
-    <!--<Input id="inputData" value="{product>Mtart}" enabled="false"/>-->
-    <!--</f:content>-->
-    <!--</f:SimpleForm>-->
-    <!--</content>-->
-    <!--</Page>-->
+                            <f:SimpleForm layout="ResponsiveGridLayout" editable="false">
+                                <m:Label text="{i18n>grossWeight}"/>
+                                <m:Text text="{product>Brgew} {product>Gewei}"/>
+                                <m:Label text="{i18n>netWeight}"/>
+                                <m:Text text="{product>Ntgew} {product>Gewei}"/>
+                            </f:SimpleForm>
+
+                        </blocks>
+                    </ObjectPageSubSection>
+
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+
+    </ObjectPageLayout>
 
 
 </mvc:View>
