@@ -1,9 +1,9 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc"
           xmlns:m="sap.m"
           xmlns="sap.uxap"
-          xmlns:semantic="sap.f.semantic"
           xmlns:f="sap.ui.layout.form"
           xmlns:l="sap.ui.layout"
+          xmlns:core="sap.ui.core"
           controllerName="de.nak.productlist.controller.Detail">
 
 
@@ -11,9 +11,18 @@
         <headerTitle>
             <ObjectPageHeader id="detailViewHeader"
                               headerDesign="Light"
-                              objectTitle="{product>Maktx}"
-                              showNavButton="true"
-                              navButtonPress="onNavButtonPress">
+                              responsive="true"
+                              objectTitle="{product>Maktx}">
+                <navigationBar>
+                    <m:Bar>
+                        <m:contentLeft>
+                            <m:Button icon="sap-icon://nav-back" tooltip="nav-back" press="onNavButtonPress"></m:Button>
+                        </m:contentLeft>
+                        <m:contentMiddle>
+                            <m:Text text="{i18n>detailPageTitle}"/>
+                        </m:contentMiddle>
+                    </m:Bar>
+                </navigationBar>
                 <actions>
                     <ObjectPageHeaderActionButton icon="sap-icon://edit" text="edit" importance="Medium"
                                                   tooltip="edit"/>
@@ -30,16 +39,17 @@
                 <m:ObjectStatus title="{i18n>lastUpdate}" text="{product>Laeda}"/>
                 <m:ObjectStatus title="{i18n>editedBy}" text="{product>Aenam}"/>
             </l:VerticalLayout>
-            <m:ObjectStatus text="{i18n>totalInventory}" state="Error"/>
-            <m:ObjectNumber number="{product>Lbkum}" numberunit="{product>Meins}"/>
+
             <l:VerticalLayout>
-                <l:layoutData>
-                    <ObjectPageHeaderLayoutData
-                            showSeparatorAfter="false"/>
-                </l:layoutData>
-                <m:Label text="PC, Unrestricted-Use Stock"/>
+                <m:ObjectStatus text="{i18n>unrestrictedStock}" state="Success"/>
                 <m:ObjectNumber number="{product>Labst}" numberUnit="{product>Meins}"/>
             </l:VerticalLayout>
+
+            <l:VerticalLayout>
+                <m:ObjectStatus text="{i18n>totalInventory}" state="None"/>
+                <m:ObjectNumber number="{product>Lbkum}" numberUnit="{product>Meins}"/>
+            </l:VerticalLayout>
+
         </headerContent>
 
         <sections>
@@ -47,19 +57,28 @@
                 <subSections>
                     <ObjectPageSubSection title="{i18n>generalInformation}">
                         <blocks>
-                            <f:SimpleForm layout="ResponsiveGridLayout" editable="false">
-                                <m:Label text="{i18n>materialType}"/>
-                                <m:Text text="{product>Mtart}"/>
-                                <m:Label text="{i18n>basicMaterial}"/>
-                                <m:Text text="{product>Wrkst}"/>
+                            <f:SimpleForm id="agagag" layout="ResponsiveGridLayout" editable="false">
+                                <f:content>
+                                    <core:Title text="{i18n>materialInfo}" level="H3"/>
+                                    <m:Label text="{i18n>materialType}"/>
+                                    <m:Text text="{product>Mtart}"/>
+                                    <m:Label text="{i18n>basicMaterial}"/>
+                                    <m:Text text="{product>Wrkst}"/>
+
+                                    <core:Title text="{i18n>organizationStructure}" level="H3"/>
+                                    <m:Label text="{i18n>branche}"/>
+                                    <m:Text text="{product>Mbrsh}"/>
+                                    <m:Label text="{i18n>sector}"/>
+                                    <m:Text text="{product>Spart}"/>
+
+                                    <core:Title text="{i18n>purchasingData}" level="H3"/>
+                                    <m:Label text="{i18n>procurement}"/>
+                                    <m:Text text="{product>Beskz}"/>
+                                    <m:Label text="{i18n>productCategory}"/>
+                                    <m:Text text="{product>Matkl}"/>
+                                </f:content>
                             </f:SimpleForm>
 
-                            <f:SimpleForm layout="ResponsiveGridLayout" editable="false">
-                                <m:Label text="{i18n>branche}"/>
-                                <m:Text text="{product>Mbrsh}"/>
-                                <m:Label text="{i18n>sector}"/>
-                                <m:Text text="{product>Spart}"/>
-                            </f:SimpleForm>
                         </blocks>
                     </ObjectPageSubSection>
 
@@ -71,20 +90,22 @@
                 <subSections>
                     <ObjectPageSubSection title="{i18n>technicalData}">
                         <blocks>
-                            <f:SimpleForm layout="ResponsiveGridLayout" editable="false" >
-                                <m:Label text="{i18n>length}"/>
-                                <m:Text text="{product>Laeng} {product>Meabm}"/>
-                                <m:Label text="{i18n>width}"/>
-                                <m:Text text="{product>Breit} {product>Meabm}"/>
-                                <m:Label text="{i18n>height}"/>
-                                <m:Text text="{product>Hoehe} {product>Meabm}"/>
-                            </f:SimpleForm>
-
                             <f:SimpleForm layout="ResponsiveGridLayout" editable="false">
-                                <m:Label text="{i18n>grossWeight}"/>
-                                <m:Text text="{product>Brgew} {product>Gewei}"/>
-                                <m:Label text="{i18n>netWeight}"/>
-                                <m:Text text="{product>Ntgew} {product>Gewei}"/>
+                                <f:content>
+                                    <core:Title text="{i18n>dimensions}" level="H3"/>
+                                    <m:Label text="{i18n>length}"/>
+                                    <m:Text text="{product>Laeng} {product>Meabm}"/>
+                                    <m:Label text="{i18n>width}"/>
+                                    <m:Text text="{product>Breit} {product>Meabm}"/>
+                                    <m:Label text="{i18n>height}"/>
+                                    <m:Text text="{product>Hoehe} {product>Meabm}"/>
+
+                                    <core:Title text="{i18n>weight}" level="H3"/>
+                                    <m:Label text="{i18n>grossWeight}"/>
+                                    <m:Text text="{product>Brgew} {product>Gewei}"/>
+                                    <m:Label text="{i18n>netWeight}"/>
+                                    <m:Text text="{product>Ntgew} {product>Gewei}"/>
+                                </f:content>
                             </f:SimpleForm>
 
                         </blocks>

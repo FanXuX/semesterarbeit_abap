@@ -114,11 +114,11 @@
         </f:content>
 
         <f:footer>
-            <OverflowToolbar>
-                <ToolbarSpacer/>
-                <Button type="Accept" text="Accept"/>
-                <Button type="Reject" text="Reject"/>
-            </OverflowToolbar>
+            <!--<OverflowToolbar>-->
+                <!--<ToolbarSpacer/>-->
+                <!--<Button type="Accept" text="Accept"/>-->
+                <!--<Button type="Reject" text="Reject"/>-->
+            <!--</OverflowToolbar>-->
         </f:footer>
 
     </f:DynamicPage>
