@@ -34,7 +34,7 @@
         <headerContent>
             <l:VerticalLayout>
                 <m:ObjectStatus title="{i18n>productId}" text="{product>Matnr}"/>
-                <m:ObjectStatus title="{i18n>stdPrice}" text="{product>Matnr}"/>
+                <m:ObjectStatus title="{i18n>stdPrice}" text="{product>Stprs} {product>Waers}"/>
                 <m:ObjectStatus title="{i18n>createdBy}" text="{product>Ernam}"/>
                 <m:ObjectStatus title="{i18n>lastUpdate}" text="{product>Laeda}"/>
                 <m:ObjectStatus title="{i18n>editedBy}" text="{product>Aenam}"/>

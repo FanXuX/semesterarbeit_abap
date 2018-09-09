@@ -22,18 +22,15 @@
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
 
-                    <!--Standard FilterBar with FilterItem productId, productName and standardPrice-->
                     <fb:FilterBar clear="onReset" search="onFilterChange" useToolbar="true" showGoOnFB="true" showFilterConfiguration="false" showClearOnFB="true">
                         <fb:filterItems>
                             <fb:FilterItem name="A" label="{i18n>productId}">
                                 <fb:control>
-                                    <!--TODO: autocomplete-->
                                     <Input type="Text" id="eProductId" placeholder="{i18n>productIdPlaceholder}"/>
                                 </fb:control>
                             </fb:FilterItem>
                             <fb:FilterItem name="B" label="{i18n>productName}">
                                 <fb:control>
-                                    <!--TODO: autocomplete-->
                                     <Input type="Text" id="eProductName" placeholder="{i18n>productNamePlaceholder}"/>
                                 </fb:control>
                             </fb:FilterItem>
@@ -104,7 +101,7 @@
                         <cells>
                             <Text text="{product>Matnr}"/>
                             <Text text="{product>Maktx}"/>
-                            <Text text="totalInventory=Total Inventory"/>
+                            <Text text="{product>Labst}"/>
                             <Text text="{product>Laeda}"/>
                             <Text text="{product>Stprs} {product>Waers}"/>
                         </cells>
@@ -112,14 +109,6 @@
                 </items>
             </Table>
         </f:content>
-
-        <f:footer>
-            <!--<OverflowToolbar>-->
-                <!--<ToolbarSpacer/>-->
-                <!--<Button type="Accept" text="Accept"/>-->
-                <!--<Button type="Reject" text="Reject"/>-->
-            <!--</OverflowToolbar>-->
-        </f:footer>
 
     </f:DynamicPage>
 </mvc:View>
