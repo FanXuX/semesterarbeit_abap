@@ -17,14 +17,22 @@ sap.ui.define([
                     delay : 0
                 });
 
+            const editModeModel = new JSONModel({
+                editing: false,
+                productId: null,
+                data: {}
+            });
+
             this.getRouter().getRoute("detail").attachPatternMatched(this._onObjectMatched,
                 this);
 
             iOriginalBusyDelay = this.getView().getBusyIndicatorDelay();
             this.setModel(oViewModel, "detailView");
+            this.setModel(editModeModel, "editModeView");
             this.getOwnerComponent().getModel("product").metadataLoaded().then(function () {
                     oViewModel.setProperty("/delay", iOriginalBusyDelay);
-                }
+                    this.getModel("product").setUseBatch(true)
+                }.bind(this)
             );
         },
 
@@ -40,6 +48,9 @@ sap.ui.define([
                     Matnr :  sPath
                 });
                 this._bindView("product>/" + sKey);
+
+                // bind edit mode
+                this.getModel("editModeView").setProperty("/productId", sPath);
             }.bind(this));
         },
 
@@ -50,8 +61,7 @@ sap.ui.define([
          * @private path in model
          */
         _bindView : function (sObjectPath) {
-            var oViewModel = this.getModel("detailView"),
-                oDataModel = this.getModel("product");
+            const oDataModel = this.getModel("product");
 
             this.getView().bindElement({
                 path: sObjectPath,
@@ -60,13 +70,13 @@ sap.ui.define([
                     dataRequested: function () {
                         oDataModel.metadataLoaded().then(function () {
                             // show loading
-                            oViewModel.setProperty("/busy", true);
-                        });
-                    },
+                            this._setBusy(true)
+                        }.bind(this));
+                    }.bind(this),
                     dataReceived: function () {
                         // loading finished
-                        oViewModel.setProperty("/busy", false);
-                    }
+                        this._setBusy(false)
+                    }.bind(this)
                 }
             });
         },
@@ -77,7 +87,6 @@ sap.ui.define([
          */
         _onBindingChange : function () {
             var oView = this.getView(),
-                oViewModel = this.getModel("detailView"),
                 oElementBinding = oView.getElementBinding("product");
 
             // No data found
@@ -89,7 +98,7 @@ sap.ui.define([
             }
 
             // data found
-            oViewModel.setProperty("/busy", false);
+            this._setBusy(false)
         },
 
         /**
@@ -106,6 +115,92 @@ sap.ui.define([
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.navTo("list", {}, true);
             }
-        }
+        },
+
+        _setBusy: function(isBusy) {
+            const model = this.getModel("detailView");
+
+            model.setProperty("/busy", isBusy);
+        },
+
+        _getBusy: function() {
+            const model = this.getModel("detailView");
+
+            return model.getProperty("/busy");
+        },
+
+        _setEditMode: function(isEdit) {
+            const editModeModel = this.getModel("editModeView");
+
+            editModeModel.setProperty("/editing", isEdit);
+        },
+
+        _getEditMode: function() {
+            const editModeModel = this.getModel("editModeView");
+
+            return editModeModel.getProperty("/editing");
+        },
+
+        onEdit: function () {
+            if (this._getEditMode()) {
+                this.onAbort();
+            } else {
+                this._setEditMode(true)
+            }
+
+        },
+
+        onInputChange: function(event) {
+            const re = /^.+edit_([a-zA-Z]{5})$/;
+
+            const elementId = event.getParameters().id;
+            const value = event.getParameters().value;
+
+            const match = re.exec(elementId);
+            if (!match) {
+                return;
+            }
+            const prop = match[1];
+
+            const editModel = this.getModel("editModeView");
+            const data = editModel.getProperty("/data");
+
+            data[prop] = value;
+
+            editModel.setProperty("/data", data);
+        },
+
+        onSave: function() {
+            const fnSuccess = function (oData, res) {
+                // this._setBusy(false);
+                // MessageToast.show(this._getText("changesSentMessage"));
+                this._setEditMode(false);
+            }.bind(this);
+
+            const fnError = function (oError) {
+                // this._setBusy(false);
+                this._setEditMode(false);
+                // MessageBox.error(oError.message);
+            }.bind(this);
+
+            const editModel = this.getModel("editModeView");
+
+            const productId = editModel.getProperty("/productId");
+            const changedData = editModel.getProperty("/data");
+
+            this.getModel("product").update("/ProduktSet('" + productId + "')", changedData, {
+                success: fnSuccess,
+                error: fnError
+            });
+
+        },
+
+        onAbort: function() {
+            const editModel = this.getModel("editModeView");
+            this.getModel("product").resetChanges();
+
+            const changedData = editModel.setProperty("/data", {});
+            this._setEditMode(false);
+        },
     })
 });

@@ -7,7 +7,7 @@
           controllerName="de.nak.productlist.controller.Detail">
 
 
-    <ObjectPageLayout id="detailPageLayout">
+    <ObjectPageLayout id="detailPageLayout" showFooter="{= ${editModeView>/editing}}">
         <headerTitle>
             <ObjectPageHeader id="detailViewHeader"
                               headerDesign="Light"
@@ -16,7 +16,7 @@
                 <navigationBar>
                     <m:Bar>
                         <m:contentLeft>
-                            <m:Button icon="sap-icon://nav-back" tooltip="nav-back" press="onNavButtonPress"></m:Button>
+                            <m:Button icon="sap-icon://nav-back" tooltip="nav-back" press="onNavButtonPress"/>
                         </m:contentLeft>
                         <m:contentMiddle>
                             <m:Text text="{i18n>detailPageTitle}"/>
@@ -25,8 +25,7 @@
                 </navigationBar>
                 <actions>
                     <ObjectPageHeaderActionButton icon="sap-icon://edit" text="edit" importance="Medium"
-                                                  tooltip="edit"/>
-                    <ObjectPageHeaderActionButton icon="sap-icon://refresh" text="{buttons>/text}" tooltip="refresh"/>
+                                                  tooltip="edit" press="onEdit"/>
                 </actions>
             </ObjectPageHeader>
         </headerTitle>
@@ -61,21 +60,33 @@
                                 <f:content>
                                     <core:Title text="{i18n>materialInfo}" level="H3"/>
                                     <m:Label text="{i18n>materialType}"/>
-                                    <m:Text text="{product>Mtart}"/>
+                                    <m:Text text="{product>Mtart}" visible="{= !${editModeView>/editing}}"/>
+                                    <m:Input id="edit_Mtart" value="{product>Mtart}" valueLiveUpdate="true"
+                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
                                     <m:Label text="{i18n>basicMaterial}"/>
-                                    <m:Text text="{product>Wrkst}"/>
+                                    <m:Text text="{product>Wrkst}" visible="{= !${editModeView>/editing}}"/>
+                                    <m:Input id="edit_Wrkst" value="{product>Wrkst}" valueLiveUpdate="true"
+                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
 
                                     <core:Title text="{i18n>organizationStructure}" level="H3"/>
                                     <m:Label text="{i18n>branche}"/>
-                                    <m:Text text="{product>Mbrsh}"/>
+                                    <m:Text text="{product>Mbrsh}" visible="{= !${editModeView>/editing}}"/>
+                                    <m:Input id="edit_Mbrsh" value="{product>Mbrsh}" valueLiveUpdate="true"
+                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
                                     <m:Label text="{i18n>sector}"/>
-                                    <m:Text text="{product>Spart}"/>
+                                    <m:Text text="{product>Spart}" visible="{= !${editModeView>/editing}}"/>
+                                    <m:Input id="edit_Spart" value="{product>Spart}" valueLiveUpdate="true"
+                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
 
                                     <core:Title text="{i18n>purchasingData}" level="H3"/>
                                     <m:Label text="{i18n>procurement}"/>
-                                    <m:Text text="{product>Beskz}"/>
+                                    <m:Text text="{product>Beskz}" visible="{= !${editModeView>/editing}}"/>
+                                    <m:Input id="edit_Beskz" value="{product>Beskz}" valueLiveUpdate="true"
+                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
                                     <m:Label text="{i18n>productCategory}"/>
-                                    <m:Text text="{product>Matkl}"/>
+                                    <m:Text text="{product>Matkl}" visible="{= !${editModeView>/editing}}"/>
+                                    <m:Input id="edit_Matkl" value="{product>Matkl}" valueLiveUpdate="true"
+                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
                                 </f:content>
                             </f:SimpleForm>
 
@@ -94,17 +105,27 @@
                                 <f:content>
                                     <core:Title text="{i18n>dimensions}" level="H3"/>
                                     <m:Label text="{i18n>length}"/>
-                                    <m:Text text="{product>Laeng} {product>Meabm}"/>
+                                    <m:Text text="{product>Laeng} {product>Meabm}" visible="{= !${editModeView>/editing}}"/>
+                                    <m:Input id="edit_Laeng" value="{product>Laeng}" valueLiveUpdate="true"
+                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
                                     <m:Label text="{i18n>width}"/>
-                                    <m:Text text="{product>Breit} {product>Meabm}"/>
+                                    <m:Text text="{product>Breit} {product>Meabm}" visible="{= !${editModeView>/editing}}"/>
+                                    <m:Input id="edit_Breit" value="{product>Breit}" valueLiveUpdate="true"
+                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
                                     <m:Label text="{i18n>height}"/>
-                                    <m:Text text="{product>Hoehe} {product>Meabm}"/>
+                                    <m:Text text="{product>Hoehe} {product>Meabm}" visible="{= !${editModeView>/editing}}"/>
+                                    <m:Input id="edit_Hoehe" value="{product>Hoehe}" valueLiveUpdate="true"
+                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
 
                                     <core:Title text="{i18n>weight}" level="H3"/>
                                     <m:Label text="{i18n>grossWeight}"/>
-                                    <m:Text text="{product>Brgew} {product>Gewei}"/>
+                                    <m:Text text="{product>Brgew} {product>Gewei}" visible="{= !${editModeView>/editing}}"/>
+                                    <m:Input id="edit_Brgew" value="{product>Brgew}" valueLiveUpdate="true"
+                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
                                     <m:Label text="{i18n>netWeight}"/>
-                                    <m:Text text="{product>Ntgew} {product>Gewei}"/>
+                                    <m:Text text="{product>Ntgew} {product>Gewei}" visible="{= !${editModeView>/editing}}"/>
+                                    <m:Input id="edit_Ntgew" value="{product>Ntgew}" valueLiveUpdate="true"
+                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
                                 </f:content>
                             </f:SimpleForm>
 
@@ -114,6 +135,14 @@
                 </subSections>
             </ObjectPageSection>
         </sections>
+
+        <footer>
+            <m:Toolbar>
+                <m:ToolbarSpacer/>
+                <m:Button text="Save" type="Accept" press="onSave" />
+                <m:Button text="Abort" type="Reject" press="onAbort" />
+            </m:Toolbar>
+        </footer>
 
     </ObjectPageLayout>
 
