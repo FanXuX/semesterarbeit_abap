@@ -195,7 +195,7 @@ sap.ui.define([
         },
 
         onInputChange: function(event) {
-            const re = /^.+(edit_[a-zA-Z]{5})$/;
+            const re = /^.+edit_([a-zA-Z]{5})$/;
 
             const elementId = event.getParameters().id;
             const value = event.getParameters().value;
