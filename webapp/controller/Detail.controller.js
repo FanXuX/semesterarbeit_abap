@@ -1,8 +1,11 @@
+/* global _:true */
 sap.ui.define([
     "de/nak/productlist/controller/BaseController",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/routing/History"
-], function (BaseController, JSONModel, History) {
+    "sap/ui/core/routing/History",
+    "de/nak/productlist/libs/lodash.min",
+    "sap/m/MessageBox"
+], function (BaseController, JSONModel, History, lodash, MessageBox) {
     "use strict";
     return BaseController.extend("de.nak.productlist.controller.Detail", {
 
@@ -10,6 +13,28 @@ sap.ui.define([
          * initialize detail view with delay function
          */
         onInit: function () {
+
+            this.inputs = _({
+                edit_Wrkst: {mandatory: false},
+                edit_Spart: {mandatory: false},
+                edit_Matkl: {mandatory: false},
+                edit_Laeng: {mandatory: false},
+                edit_Breit: {mandatory: false},
+                edit_Hoehe: {mandatory: false},
+                edit_Brgew: {mandatory: false},
+                edit_Ntgew: {mandatory: false},
+            })
+                .mapValues(function (v, k) {
+                    return {
+                        mandatory: v.mandatory,
+                        input: this.getView().byId(k)
+                    }
+                }.bind(this))
+                .mapKeys(function (v, k) {
+                    return this.getView().byId(k);
+                }.bind(this));
+
+            sap.ui.getCore().getMessageManager().registerObject(this.getView().byId("edit_Wrkst"), true);
 
             var iOriginalBusyDelay,
                 oViewModel = new JSONModel({
@@ -150,8 +175,27 @@ sap.ui.define([
 
         },
 
+        _validate: function(input, isMandatory) {
+            const valueBinding = input.getBinding("value");
+            const value = input.getValue();
+
+            let isValid = false;
+
+            if (!isMandatory || (isMandatory && value)) {
+                try {
+                    valueBinding.getType().validateValue(value);
+                    isValid = true;
+                } catch (e) {
+                    // Error found
+                }
+            }
+
+            input.setValueState(isValid ? sap.ui.core.ValueState.None : sap.ui.core.ValueState.Error);
+            return isValid;
+        },
+
         onInputChange: function(event) {
-            const re = /^.+edit_([a-zA-Z]{5})$/;
+            const re = /^.+(edit_[a-zA-Z]{5})$/;
 
             const elementId = event.getParameters().id;
             const value = event.getParameters().value;
@@ -161,6 +205,12 @@ sap.ui.define([
                 return;
             }
             const prop = match[1];
+            const input = event.getSource();
+
+            if (!this._validate(input, this.inputs[input].mandatory)) {
+                // found an error
+                return;
+            }
 
             const editModel = this.getModel("editModeView");
             const data = editModel.getProperty("/data");
@@ -182,6 +232,23 @@ sap.ui.define([
                 this._setEditMode(false);
                 // MessageBox.error(oError.message);
             }.bind(this);
+
+            // validate
+            const isValid = _(this.inputs)
+                .values()
+                .map(function(v) {
+                    const input = v.input;
+                    const isMandatory = v.mandatory;
+                    return this._validate(input, isMandatory);
+                }.bind(this))
+                .every(function (value) {
+                    return value;
+                });
+
+            if (!isValid) {
+                MessageBox.error("form invalid");
+                return;
+            }
 
             const editModel = this.getModel("editModeView");
 
