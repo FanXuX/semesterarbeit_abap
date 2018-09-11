@@ -129,6 +129,8 @@ sap.ui.define([
          * navigate back to list view
          */
         onNavButtonPress: function () {
+            this.onAbort();
+
             //check if there is ui5 history
             var history = History.getInstance();
             var previousHash = history.getPreviousHash();
