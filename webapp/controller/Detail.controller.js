@@ -15,6 +15,7 @@ sap.ui.define([
         onInit: function () {
 
             this.inputs = _({
+                edit_Maktx: {mandatory: true},
                 edit_Wrkst: {mandatory: false},
                 edit_Spart: {mandatory: false},
                 edit_Matkl: {mandatory: false},
