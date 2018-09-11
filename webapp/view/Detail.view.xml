@@ -60,9 +60,7 @@
                                 <f:content>
                                     <core:Title text="{i18n>materialInfo}" level="H3"/>
                                     <m:Label text="{i18n>materialType}"/>
-                                    <m:Text text="{product>Mtart}" visible="{= !${editModeView>/editing}}"/>
-                                    <m:Input id="edit_Mtart" value="{product>Mtart}" valueLiveUpdate="true"
-                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
+                                    <m:Text text="{product>Mtart}" value="{product>Mtart}"/>
                                     <m:Label text="{i18n>basicMaterial}"/>
                                     <m:Text text="{product>Wrkst}" visible="{= !${editModeView>/editing}}"/>
                                     <m:Input id="edit_Wrkst" value="{product>Wrkst}" valueLiveUpdate="true"
@@ -70,9 +68,7 @@
 
                                     <core:Title text="{i18n>organizationStructure}" level="H3"/>
                                     <m:Label text="{i18n>branche}"/>
-                                    <m:Text text="{product>Mbrsh}" visible="{= !${editModeView>/editing}}"/>
-                                    <m:Input id="edit_Mbrsh" value="{product>Mbrsh}" valueLiveUpdate="true"
-                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
+                                    <m:Text text="{product>Mbrsh}" value="{product>Mbrsh}"/>
                                     <m:Label text="{i18n>sector}"/>
                                     <m:Text text="{product>Spart}" visible="{= !${editModeView>/editing}}"/>
                                     <m:Input id="edit_Spart" value="{product>Spart}" valueLiveUpdate="true"
@@ -80,9 +76,7 @@
 
                                     <core:Title text="{i18n>purchasingData}" level="H3"/>
                                     <m:Label text="{i18n>procurement}"/>
-                                    <m:Text text="{product>Beskz}" visible="{= !${editModeView>/editing}}"/>
-                                    <m:Input id="edit_Beskz" value="{product>Beskz}" valueLiveUpdate="true"
-                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"/>
+                                    <m:Text text="{product>Beskz}" value="{product>Beskz}"/>
                                     <m:Label text="{i18n>productCategory}"/>
                                     <m:Text text="{product>Matkl}" visible="{= !${editModeView>/editing}}"/>
                                     <m:Input id="edit_Matkl" value="{product>Matkl}" valueLiveUpdate="true"
