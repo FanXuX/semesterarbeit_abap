@@ -3,7 +3,7 @@
            xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
            xmlns:sap="http://www.sap.com/Protocols/SAPData">
     <edmx:DataServices m:DataServiceVersion="2.0">
-        <Schema Namespace="ZVG_15D_41_42_HA_SRV" xml:lang="en" sap:schema-version="1"
+        <Schema Namespace="ZVG_15D_41_42_HA_SRV" xml:lang="de" sap:schema-version="1"
                 xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
             <EntityType Name="Produkt" sap:content-version="1">
                 <Key>
@@ -11,36 +11,62 @@
                 </Key>
                 <Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="18" sap:label="Material"
                           sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Maktx" Type="Edm.String" Nullable="false" MaxLength="40" sap:label="Description"
+                <Property Name="Maktx" Type="Edm.String" Nullable="false" MaxLength="40" sap:label="Bezeichnung"
                           sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Mtart" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Material Type"
+                <Property Name="Mtart" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Materialart"
                           sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Wrkst" Type="Edm.String" Nullable="false" MaxLength="48" sap:label="Basic material"
+                <Property Name="Wrkst" Type="Edm.String" Nullable="false" MaxLength="48" sap:label="Werkstoff"
                           sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Stprs" Type="Edm.Decimal" Nullable="false" Precision="12" Scale="3"
-                          sap:label="Standard price" sap:creatable="false" sap:updatable="false" sap:sortable="false"
+                <Property Name="Stprs" Type="Edm.Decimal" Nullable="false" Precision="23" Scale="4"
+                          sap:label="Standardpreis" sap:creatable="false" sap:updatable="false" sap:sortable="false"
                           sap:filterable="false"/>
-                <Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5" sap:label="Currency"
+                <Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5" sap:label="Währung"
                           sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"
                           sap:semantics="currency-code"/>
+                <Property Name="Mbrsh" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Branche"
+                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Spart" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Sparte"
+                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Lbkum" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"
-                          sap:label="Total Stock" sap:creatable="false" sap:updatable="false" sap:sortable="false"
+                          sap:label="Gesamtbestand" sap:creatable="false" sap:updatable="false" sap:sortable="false"
                           sap:filterable="false"/>
                 <Property Name="Labst" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"
-                          sap:label="Unrestricted" sap:creatable="false" sap:updatable="false" sap:sortable="false"
+                          sap:label="Frei verwendbar" sap:creatable="false" sap:updatable="false" sap:sortable="false"
                           sap:filterable="false"/>
-                <Property Name="Meins" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Base Unit"
+                <Property Name="Meins" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Basis-ME"
                           sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"
                           sap:semantics="unit-of-measure"/>
                 <Property Name="Brgew" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"
-                          sap:label="Gross Weight" sap:creatable="false" sap:updatable="false" sap:sortable="false"
+                          sap:label="Bruttogewicht" sap:creatable="false" sap:updatable="false" sap:sortable="false"
                           sap:filterable="false"/>
                 <Property Name="Ntgew" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"
-                          sap:label="Net Weight" sap:creatable="false" sap:updatable="false" sap:sortable="false"
+                          sap:label="Nettogewicht" sap:creatable="false" sap:updatable="false" sap:sortable="false"
                           sap:filterable="false"/>
-                <Property Name="Beskz" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Procurement"
+                <Property Name="Beskz" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Beschaffung"
                           sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Aenam" Type="Edm.String" Nullable="false" MaxLength="12" sap:label="Changed by"
+                <Property Name="Matkl" Type="Edm.String" Nullable="false" MaxLength="9" sap:label="Warengruppe"
+                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Groes" Type="Edm.String" Nullable="false" MaxLength="32" sap:label="Größe/Abmess"
+                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Gewei" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Gewichtseinheit"
+                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"
+                          sap:semantics="unit-of-measure"/>
+                <Property Name="Laeng" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:label="Länge"
+                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Breit" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:label="Breite"
+                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Hoehe" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:label="Höhe"
+                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Meabm" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Einheit"
+                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"
+                          sap:semantics="unit-of-measure"/>
+                <Property Name="Ersda" Type="Edm.DateTime" Nullable="false" Precision="7" sap:label="Zeitstempel"
+                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Aenam" Type="Edm.String" Nullable="false" MaxLength="12" sap:label="Geändert von"
+                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ernam" Type="Edm.String" Nullable="false" MaxLength="12" sap:label="Angelegt von"
+                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Laeda" Type="Edm.DateTime" Nullable="false" Precision="7" sap:label="Zeitstempel"
                           sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
             <EntityContainer Name="ZVG_15D_41_42_HA_SRV_Entities" m:IsDefaultEntityContainer="true"
