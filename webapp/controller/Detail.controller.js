@@ -32,9 +32,8 @@ sap.ui.define([
                 }.bind(this))
                 .mapKeys(function (v, k) {
                     return this.getView().byId(k);
-                }.bind(this));
-
-            sap.ui.getCore().getMessageManager().registerObject(this.getView().byId("edit_Wrkst"), true);
+                }.bind(this))
+                .value();
 
             var iOriginalBusyDelay,
                 oViewModel = new JSONModel({
