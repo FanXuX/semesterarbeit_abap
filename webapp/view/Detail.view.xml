@@ -58,9 +58,11 @@
                         <blocks>
                             <f:SimpleForm layout="ResponsiveGridLayout" editable="false">
                                 <f:content>
-                                    <core:Title text="{i18n>materialInfo}" level="H3"/>
-                                    <m:Label text="{i18n>basicMaterial}" labelFor="edit_Maktx"
-                                             visible="{= ${editModeView>/editing}}"/>
+
+                                    <core:Title text="Matrial Kurztext" level="H3"/>
+                                    <!--<m:Label text="{i18n>productName}" labelFor="edit_Maktx"-->
+                                             <!--visible="{= ${editModeView>/editing}}"/>-->
+                                    <m:Text text="{product>Maktx}"/>
                                     <m:Input id="edit_Maktx" valueLiveUpdate="true"
                                              liveChange="onInputChange" visible="{= ${editModeView>/editing}}"
                                              value="{
@@ -71,6 +73,7 @@
                                                 }
                                              }"/>
 
+                                    <core:Title text="{i18n>materialInfo}" level="H3"/>
                                     <m:Label text="{i18n>materialType}"/>
                                     <m:Text text="{product>Mtart}" value="{product>Mtart}"/>
                                     <m:Label text="{i18n>basicMaterial}" labelFor="edit_Wrkst"/>

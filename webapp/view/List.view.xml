@@ -30,16 +30,20 @@
                         <fb:filterItems>
                             <fb:FilterItem name="A" label="{i18n>productId}">
                                 <fb:control>
-                                    <!--TODO: valueHelp autocomplete feature-->
-                                    <Input type="Text" id="eProductId" placeholder="{i18n>productIdPlaceholder}" showValueHelp="true"/>
+                                    <Input type="Text" id="eProductId" placeholder="{i18n>productIdPlaceholder}"/>
                                 </fb:control>
                             </fb:FilterItem>
                             <fb:FilterItem name="B" label="{i18n>productName}">
                                 <fb:control>
-                                    <Input type="Text" id="eProductName" placeholder="{i18n>productNamePlaceholder}" showValueHelp="true"/>
+                                    <Input type="Text" id="eProductName" placeholder="{i18n>productNamePlaceholder}"/>
                                 </fb:control>
                             </fb:FilterItem>
-                            <fb:FilterItem name="C" label="{i18n>stdPrice}">
+                            <fb:FilterItem name="C" label="{i18n>productCategory}">
+                                <fb:control>
+                                    <Input type="Text" id="eProductCategory" showValueHelp="true" placeholder="{i18n>productCategoryPlaceholder}"/>
+                                </fb:control>
+                            </fb:FilterItem>
+                            <fb:FilterItem name="D" label="{i18n>stdPrice}">
                                 <fb:control>
                                     <ComboBox type="Text" id="slStdPrice" placeholder="{i18n>stdPricePlaceholder}">
                                         <items>
