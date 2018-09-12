@@ -18,7 +18,7 @@
       return this.Brgew - 10;
     },
     Beskz: "procurement",
-    Matkl: '{{random("Gruppe1", "Gruppe2", "Gruppe3", "Gruppe4"), "Gruppe5"}}',
+    Matkl: '{{random("Gruppe1", "Gruppe2", "Gruppe3", "Gruppe4", "Gruppe5")}}',
     Groes: '{{integer(10, 500)}}',
     Laeng: '{{integer(35, 80)}}',
     Breit: '{{integer(15, 50)}}',

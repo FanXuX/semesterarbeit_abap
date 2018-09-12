@@ -30,12 +30,13 @@
                         <fb:filterItems>
                             <fb:FilterItem name="A" label="{i18n>productId}">
                                 <fb:control>
-                                    <Input type="Text" id="eProductId" placeholder="{i18n>productIdPlaceholder}"/>
+                                    <!--TODO: valueHelp autocomplete feature-->
+                                    <Input type="Text" id="eProductId" placeholder="{i18n>productIdPlaceholder}" showValueHelp="true"/>
                                 </fb:control>
                             </fb:FilterItem>
                             <fb:FilterItem name="B" label="{i18n>productName}">
                                 <fb:control>
-                                    <Input type="Text" id="eProductName" placeholder="{i18n>productNamePlaceholder}"/>
+                                    <Input type="Text" id="eProductName" placeholder="{i18n>productNamePlaceholder}" showValueHelp="true"/>
                                 </fb:control>
                             </fb:FilterItem>
                             <fb:FilterItem name="C" label="{i18n>stdPrice}">
@@ -88,9 +89,9 @@
                             <Label text="{i18n>unrestrictedStock}"/>
                         </header>
                     </Column>
-                    <Column id="columnLastUpdate">
+                    <Column id="columnProductCategory">
                         <header>
-                            <Label text="{i18n>lastUpdate}"/>
+                            <Label text="{i18n>productCategory}"/>
                         </header>
                     </Column>
                     <Column id="columnPrice">
@@ -106,7 +107,7 @@
                             <Text text="{product>Matnr}"/>
                             <Text text="{product>Maktx}"/>
                             <Text text="{product>Labst}"/>
-                            <Text text="{product>Laeda}"/>
+                            <Text text="{product>Matkl}"/>
                             <Text text="{product>Stprs} {product>Waers}"/>
                         </cells>
                     </ColumnListItem>

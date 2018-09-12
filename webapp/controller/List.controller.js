@@ -63,8 +63,8 @@ sap.ui.define([
 
             // prepare functions for grouping
             this.mGroupFunctions = {
-                Maktx: function(oContext) {
-                    var name = oContext.getProperty("Maktx");
+                Matkl: function(oContext) {
+                    var name = oContext.getProperty("Matkl");
                     return {
                         key: name,
                         text: name
@@ -149,6 +149,10 @@ sap.ui.define([
         handleSortDialogButtonPressed: function (oEvent) {
             if (!this._oDialog) {
                 this._oDialog = sap.ui.xmlfragment("de.nak.productlist.fragment.SortDialog", this);
+                var i18nModel = new sap.ui.model.resource.ResourceModel({
+                    bundleUrl : "../i18n/i18n.properties"
+                });
+                this._oDialog.setModel(i18nModel, "i18n");
             }
             // toggle compact style
             jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialog);

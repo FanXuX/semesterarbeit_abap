@@ -1,20 +1,19 @@
 <core:FragmentDefinition
         xmlns="sap.m"
         xmlns:core="sap.ui.core">
-    <ViewSettingsDialog title="Produktlist sortieren" confirm="handleConfirm">
+    <ViewSettingsDialog title="{i18n>sortDialog}" confirm="handleConfirm">
 
         <sortItems>
-            <ViewSettingsItem text="Produkt ID" key="Matnr" selected="true" />
-            <ViewSettingsItem text="Produktname" key="Maktx" />
-            <ViewSettingsItem text="Frei verwendbare Bestand" key="Lbkum" />
-            <!--TODO: date sorting update-->
-            <ViewSettingsItem text="Letzte Änderung" key="Laeda" />
-            <ViewSettingsItem text="Preis" key="Stprs" />
+            <ViewSettingsItem text="{i18n>productId}" key="Matnr" selected="true" />
+            <ViewSettingsItem text="{i18n>productName}" key="Maktx" />
+            <ViewSettingsItem text="{i18n>unrestrictedStock}" key="Labst" />
+            <ViewSettingsItem text="{i18n>productCategory}" key="Matkl" />
+            <ViewSettingsItem text="{i18n>stdPrice}" key="Stprs" />
         </sortItems>
 
         <groupItems>
-            <ViewSettingsItem text="Produktname" key="Maktx" />
-            <ViewSettingsItem text="Preis" key="Stprs" />
+            <ViewSettingsItem text="{i18n>productCategory}" key="Matkl" />
+            <ViewSettingsItem text="{i18n>stdPrice}" key="Stprs" />
         </groupItems>
 
     </ViewSettingsDialog>
