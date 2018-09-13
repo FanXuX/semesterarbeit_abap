@@ -14,27 +14,10 @@ sap.ui.define([
          */
         onInit: function () {
 
-            this.inputs = _({
-                edit_Maktx: {mandatory: true},
-                edit_Wrkst: {mandatory: false},
-                edit_Spart: {mandatory: false},
-                edit_Matkl: {mandatory: false},
-                edit_Laeng: {mandatory: false},
-                edit_Breit: {mandatory: false},
-                edit_Hoehe: {mandatory: false},
-                edit_Brgew: {mandatory: false},
-                edit_Ntgew: {mandatory: false},
-            })
-                .mapValues(function (v, k) {
-                    return {
-                        mandatory: v.mandatory,
-                        input: this.getView().byId(k)
-                    }
-                }.bind(this))
-                .mapKeys(function (v, k) {
-                    return this.getView().byId(k);
-                }.bind(this))
-                .value();
+            this.generalForm = this.getView().byId("generalForm");
+            this.technicalForm = this.getView().byId("technicalForm");
+
+            this._initInputs();
 
             var iOriginalBusyDelay,
                 oViewModel = new JSONModel({
@@ -59,6 +42,29 @@ sap.ui.define([
                     this.getModel("product").setUseBatch(true)
                 }.bind(this)
             );
+
+            this._onViewMode();
+        },
+
+        _initInputs: function() {
+            this.inputs = _({
+                edit_Maktx: {mandatory: true},
+                edit_Wrkst: {mandatory: false},
+                edit_Spart: {mandatory: false},
+                edit_Matkl: {mandatory: false},
+                edit_Laeng: {mandatory: false},
+                edit_Breit: {mandatory: false},
+                edit_Hoehe: {mandatory: false},
+                edit_Brgew: {mandatory: false},
+                edit_Ntgew: {mandatory: false},
+            })
+                .mapValues(function(v, k) {
+                    return {
+                        input: null,
+                        mandatory: v.mandatory
+                    }
+                })
+                .value();
         },
 
         /**
@@ -77,6 +83,270 @@ sap.ui.define([
                 // bind edit mode
                 this.getModel("editModeView").setProperty("/productId", sPath);
             }.bind(this));
+        },
+
+        _clearForms: function() {
+            _([this.generalForm, this.technicalForm])
+                .forEach(function(form) {
+                    form.destroyContent();
+                });
+        },
+
+        _createTitle: function(i18n) {
+            return new sap.ui.core.Title({
+                level: "H3",
+                text: "{i18n>" + i18n + "}"
+            });
+        },
+
+        _createText: function(text) {
+            let value = text;
+            if (!text.startsWith("{")) {
+                value = "{product>" + text + "}";
+            }
+
+            return new sap.m.Text({
+                text: value
+            });
+        },
+
+        _createLabel: function(i18n, labelFor) {
+            const label = new sap.m.Label({
+                text: "{i18n>" + i18n + "}"
+            });
+
+            if (labelFor) {
+                label.setLabelFor("edit_" + labelFor);
+            }
+
+            return label;
+        },
+
+        _createInput: function(prop, conf) {
+            const id = 'edit_' + prop;
+
+            const value = {
+                path: 'product>' + prop,
+            };
+
+            const settings = {
+                valueLiveUpdate: true,
+                liveChange: this.onInputChange.bind(this),
+                value: value
+            };
+
+            if (conf) {
+                if (conf.type) {
+                    settings['type'] = conf.type;
+                }
+                if (conf.description) {
+                    settings['description'] = conf.description
+                }
+                if (conf.value) {
+                    const v = conf.value;
+                    if (v.type) {
+                        value['type'] = v.type;
+                    }
+                    if (v.constraint) {
+                        value['constraint'] = v.constraint;
+                    }
+                }
+            }
+
+            const input = new sap.m.Input(id, settings);
+
+            this.inputs[id].input = input;
+
+            return input;
+        },
+
+        _addToForm: function(form) {
+            return function(content) {
+                form.addContent(content);
+            };
+        },
+
+        _setForms: function(generalContent, technicalContent) {
+            // remove everything
+            this._clearForms();
+
+            const addToGeneral = this._addToForm(this.generalForm);
+            const addToTechnical = this._addToForm(this.technicalForm);
+
+            _(generalContent)
+                .forEach(addToGeneral);
+
+            _(technicalContent)
+                .forEach(addToTechnical);
+        },
+
+        _onViewMode: function() {
+
+            const generalContent = [
+                this._createTitle("materialInfo"),
+                this._createLabel("Maktx"),
+                this._createText("Maktx"),
+
+                this._createTitle("materialInfo"),
+                this._createLabel("materialType"),
+                this._createText("Mtart"),
+                this._createLabel("basicMaterial"),
+                this._createText("Wrkst"),
+
+                this._createTitle("organizationStructure"),
+                this._createLabel("branche"),
+                this._createText("Mbrsh"),
+                this._createLabel("sector"),
+                this._createText("Spart"),
+
+                this._createTitle("purchasingData"),
+                this._createLabel("procurement"),
+                this._createText("Beskz"),
+                this._createLabel("productCategory"),
+                this._createText("Matkl"),
+            ];
+
+            const technicalContent = [
+                this._createTitle("dimensions"),
+                this._createLabel("length"),
+                this._createText("{product>Laeng} {product>Meabm}"),
+                this._createLabel("width"),
+                this._createText("{product>Breit} {product>Meabm}"),
+                this._createLabel("height"),
+                this._createText("{product>Hoehe} {product>Meabm}"),
+
+                this._createTitle("weight"),
+                this._createLabel("grossWeight"),
+                this._createText("{product>Brgew} {product>Gewei}"),
+                this._createLabel("netWeight"),
+                this._createText("{product>Ntgew} {product>Gewei}"),
+            ];
+
+            this._setForms(generalContent, technicalContent);
+        },
+
+        _onEditMode: function() {
+            this._initInputs();
+
+            const generalContent = [
+                this._createTitle("materialInfo"),
+                this._createLabel("Maktx", "Maktx"),
+                this._createInput("Maktx", {
+                    value: {
+                        type : 'sap.ui.model.type.String',
+                        constraints : {
+                            maxLength: 40
+                        }
+                    }
+                }),
+
+                this._createTitle("materialInfo"),
+                this._createLabel("materialType"),
+                this._createText("Mtart"),
+                this._createLabel("basicMaterial", "Wrkst"),
+                this._createInput("Wrkst", {
+                    value: {
+                        type : 'sap.ui.model.type.String',
+                        constraints : {
+                            maxLength: 40
+                        }
+                    }
+                }),
+
+                this._createTitle("organizationStructure"),
+                this._createLabel("branche"),
+                this._createText("Mbrsh"),
+                this._createLabel("sector", "Spart"),
+                this._createInput("Spart", {
+                    value: {
+                        type : 'sap.ui.model.type.String',
+                        constraints : {
+                            maxLength: 2
+                        }
+                    }
+                }),
+
+                this._createTitle("purchasingData"),
+                this._createLabel("procurement"),
+                this._createText("Beskz"),
+                this._createLabel("productCategory", "Matkl"),
+                this._createInput("Matkl", {
+                    value: {
+                        type : 'sap.ui.model.type.String',
+                        constraints : {
+                            maxLength: 9
+                        }
+                    }
+                }),
+            ];
+
+            const technicalContent = [
+                this._createTitle("dimensions"),
+                this._createLabel("length", "Laeng"),
+                this._createInput("Laeng", {
+                    type: "Number",
+                    description: "{product>Meabm}",
+                    value: {
+                        type : 'sap.ui.model.type.Float',
+                        constraints : {
+                            minimum: 0,
+                            maximum: 99999999
+                        }
+                    }
+                }),
+                this._createLabel("width", "Breit"),
+                this._createInput("Breit", {
+                    type: "Number",
+                    description: "{product>Meabm}",
+                    value: {
+                        type : 'sap.ui.model.type.Float',
+                        constraints : {
+                            minimum: 0,
+                            maximum: 99999999
+                        }
+                    }
+                }),
+                this._createLabel("height", "Hoehe"),
+                this._createInput("Hoehe", {
+                    type: "Number",
+                    description: "{product>Meabm}",
+                    value: {
+                        type : 'sap.ui.model.type.Float',
+                        constraints : {
+                            minimum: 0,
+                            maximum: 99999999
+                        }
+                    }
+                }),
+
+                this._createTitle("weight"),
+                this._createLabel("grossWeight", "Brgew"),
+                this._createInput("Brgew", {
+                    type: "Number",
+                    description: "{product>Gewei}",
+                    value: {
+                        type : 'sap.ui.model.type.Float',
+                        constraints : {
+                            minimum: 0,
+                            maximum: 99999999
+                        }
+                    }
+                }),
+                this._createLabel("netWeight", "Ntgew"),
+                this._createInput("Ntgew", {
+                    type: "Number",
+                    description: "{product>Gewei}",
+                    value: {
+                        type : 'sap.ui.model.type.Float',
+                        constraints : {
+                            minimum: 0,
+                            maximum: 99999999
+                        }
+                    }
+                }),
+            ];
+
+            this._setForms(generalContent, technicalContent);
         },
 
         /**
@@ -123,6 +393,7 @@ sap.ui.define([
             }
 
             // data found
+            // this._onViewMode();
             this._setBusy(false)
         },
 
@@ -160,6 +431,12 @@ sap.ui.define([
             const editModeModel = this.getModel("editModeView");
 
             editModeModel.setProperty("/editing", isEdit);
+
+            if (isEdit) {
+                this._onEditMode();
+            } else {
+                this._onViewMode();
+            }
         },
 
         _getEditMode: function() {
@@ -197,7 +474,7 @@ sap.ui.define([
         },
 
         onInputChange: function(event) {
-            const re = /^.+edit_([a-zA-Z]{5})$/;
+            const re = /^.*edit_([a-zA-Z]{5})$/;
 
             const elementId = event.getParameters().id;
             const value = event.getParameters().value;
@@ -209,7 +486,7 @@ sap.ui.define([
             const prop = match[1];
             const input = event.getSource();
 
-            if (!this._validate(input, this.inputs[input].mandatory)) {
+            if (!this._validate(input, this.inputs["edit_" + prop].mandatory)) {
                 // found an error
                 return;
             }

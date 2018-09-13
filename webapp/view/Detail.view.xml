@@ -56,67 +56,9 @@
                 <subSections>
                     <ObjectPageSubSection title="{i18n>generalInformation}">
                         <blocks>
-                            <f:SimpleForm layout="ResponsiveGridLayout" editable="false">
+                            <f:SimpleForm id="generalForm" layout="ResponsiveGridLayout" editable="false">
                                 <f:content>
 
-                                    <core:Title text="Matrial Kurztext" level="H3"/>
-                                    <!--<m:Label text="{i18n>productName}" labelFor="edit_Maktx"-->
-                                             <!--visible="{= ${editModeView>/editing}}"/>-->
-                                    <m:Text text="{product>Maktx}"/>
-                                    <m:Input id="edit_Maktx" valueLiveUpdate="true"
-                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"
-                                             value="{
-                                                path: 'product>Maktx',
-                                                type : 'sap.ui.model.type.String',
-                                                constraints : {
-                                                    maxLength: 40
-                                                }
-                                             }"/>
-
-                                    <core:Title text="{i18n>materialInfo}" level="H3"/>
-                                    <m:Label text="{i18n>materialType}"/>
-                                    <m:Text text="{product>Mtart}" value="{product>Mtart}"/>
-                                    <m:Label text="{i18n>basicMaterial}" labelFor="edit_Wrkst"/>
-                                    <m:Text text="{product>Wrkst}" visible="{= !${editModeView>/editing}}"/>
-                                    <m:Input id="edit_Wrkst" valueLiveUpdate="true"
-                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"
-                                             value="{
-                                                path: 'product>Wrkst',
-                                                type : 'sap.ui.model.type.String',
-                                                constraints : {
-                                                    maxLength: 48
-                                                }
-                                             }"/>
-
-                                    <core:Title text="{i18n>organizationStructure}" level="H3"/>
-                                    <m:Label text="{i18n>branche}"/>
-                                    <m:Text text="{product>Mbrsh}" value="{product>Mbrsh}"/>
-                                    <m:Label text="{i18n>sector}" labelFor="edit_Spart"/>
-                                    <m:Text text="{product>Spart}" visible="{= !${editModeView>/editing}}"/>
-                                    <m:Input id="edit_Spart" valueLiveUpdate="true"
-                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"
-                                             value="{
-                                                path: 'product>Spart',
-                                                type : 'sap.ui.model.type.String',
-                                                constraints : {
-                                                    maxLength: 2
-                                                }
-                                             }"/>
-
-                                    <core:Title text="{i18n>purchasingData}" level="H3"/>
-                                    <m:Label text="{i18n>procurement}"/>
-                                    <m:Text text="{product>Beskz}" value="{product>Beskz}"/>
-                                    <m:Label text="{i18n>productCategory}" labelFor="edit_Matkl"/>
-                                    <m:Text text="{product>Matkl}" visible="{= !${editModeView>/editing}}"/>
-                                    <m:Input id="edit_Matkl" valueLiveUpdate="true"
-                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"
-                                             value="{
-                                                path: 'product>Matkl',
-                                                type : 'sap.ui.model.type.String',
-                                                constraints : {
-                                                    maxLength: 9
-                                                }
-                                             }"/>
                                 </f:content>
                             </f:SimpleForm>
 
@@ -131,85 +73,8 @@
                 <subSections>
                     <ObjectPageSubSection title="{i18n>technicalData}">
                         <blocks>
-                            <f:SimpleForm layout="ResponsiveGridLayout" editable="false">
+                            <f:SimpleForm id="technicalForm" layout="ResponsiveGridLayout" editable="false">
                                 <f:content>
-                                    <core:Title text="{i18n>dimensions}" level="H3"/>
-                                    <m:Label text="{i18n>length}" labelFor="edit_Laeng"/>
-                                    <m:Text text="{product>Laeng} {product>Meabm}"
-                                            visible="{= !${editModeView>/editing}}"/>
-                                    <m:Input id="edit_Laeng" valueLiveUpdate="true"
-                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"
-                                             description="{product>Meabm}"
-                                             value="{
-                                                path: 'product>Laeng',
-                                                type : 'sap.ui.model.type.Float',
-                                                constraints : {
-                                                    minimum: 0,
-                                                    maximum: 99999999
-                                                }
-                                             }"/>
-
-                                    <m:Label text="{i18n>width}" labelFor="edit_Breit"/>
-                                    <m:Text text="{product>Breit} {product>Meabm}"
-                                            visible="{= !${editModeView>/editing}}"/>
-                                    <m:Input id="edit_Breit" valueLiveUpdate="true"
-                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"
-                                             type="Number" description="{product>Meabm}"
-                                             value="{
-                                                path: 'product>Breit',
-                                                type : 'sap.ui.model.type.Float',
-                                                constraints : {
-                                                    minimum: 0,
-                                                    maximum: 99999999
-                                                }
-                                             }"/>
-
-                                    <m:Label text="{i18n>height}" labelFor="edit_Hoehe"/>
-                                    <m:Text text="{product>Hoehe} {product>Meabm}"
-                                            visible="{= !${editModeView>/editing}}"/>
-                                    <m:Input id="edit_Hoehe" valueLiveUpdate="true"
-                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"
-                                             type="Number" description="{product>Meabm}"
-                                             value="{
-                                                path: 'product>Hoehe',
-                                                type : 'sap.ui.model.type.Float',
-                                                constraints : {
-                                                    minimum: 0,
-                                                    maximum: 99999999
-                                                }
-                                             }"/>
-
-
-                                    <core:Title text="{i18n>weight}" level="H3"/>
-                                    <m:Label text="{i18n>grossWeight}" labelFor="edit_Brgew"/>
-                                    <m:Text text="{product>Brgew} {product>Gewei}"
-                                            visible="{= !${editModeView>/editing}}"/>
-                                    <m:Input id="edit_Brgew" valueLiveUpdate="true"
-                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"
-                                             type="Number" description="{product>Gewei}"
-                                             value="{
-                                                path: 'product>Brgew',
-                                                type : 'sap.ui.model.type.Float',
-                                                constraints : {
-                                                    minimum: 0,
-                                                    maximum: 99999999
-                                                }
-                                             }"/>
-
-                                    <m:Label text="{i18n>netWeight}" labelFor="edit_Ntgew"/>
-                                    <m:Text text="{product>Ntgew} {product>Gewei}"
-                                            visible="{= !${editModeView>/editing}}"/>
-                                    <m:Input id="edit_Ntgew" valueLiveUpdate="true"
-                                             liveChange="onInputChange" visible="{= ${editModeView>/editing}}"
-                                             type="Number" description="{product>Gewei}"
-                                             value="{
-                                                path: 'product>Ntgew',
-                                                type : 'sap.ui.model.type.Float',
-                                                constraints : {
-                                                    minimum: 0,
-                                                    maximum: 99999999
-                                                }
-                                             }"/>
 
                                 </f:content>
                             </f:SimpleForm>
