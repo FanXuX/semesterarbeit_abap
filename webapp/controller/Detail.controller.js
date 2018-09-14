@@ -183,8 +183,8 @@ sap.ui.define([
         _onViewMode: function() {
 
             const generalContent = [
-                this._createTitle("materialInfo"),
-                this._createLabel("Maktx"),
+                this._createTitle("discription"),
+                this._createLabel("productName"),
                 this._createText("Maktx"),
 
                 this._createTitle("materialInfo"),
@@ -229,8 +229,8 @@ sap.ui.define([
             this._initInputs();
 
             const generalContent = [
-                this._createTitle("materialInfo"),
-                this._createLabel("Maktx", "Maktx"),
+                this._createTitle("discription"),
+                this._createLabel("productName", "Maktx"),
                 this._createInput("Maktx", {
                     value: {
                         type : 'sap.ui.model.type.String',
