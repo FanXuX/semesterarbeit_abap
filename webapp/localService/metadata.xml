@@ -5,6 +5,13 @@
     <edmx:DataServices m:DataServiceVersion="2.0">
         <Schema Namespace="ZVG_15D_41_42_HA_SRV" xml:lang="de" sap:schema-version="1"
                 xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="Warengruppe" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Name"/>
+                </Key>
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="9" sap:label="Warengruppe"
+                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
             <EntityType Name="Produkt" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Matnr"/>
@@ -60,18 +67,25 @@
                 <Property Name="Meabm" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Einheit"
                           sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"
                           sap:semantics="unit-of-measure"/>
-                <Property Name="Ersda" Type="Edm.DateTime" Nullable="false" Precision="7" sap:label="Zeitstempel"
-                          sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Aenam" Type="Edm.String" Nullable="false" MaxLength="12" sap:label="Geändert von"
                           sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Ernam" Type="Edm.String" Nullable="false" MaxLength="12" sap:label="Angelegt von"
                           sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Laeda" Type="Edm.DateTime" Nullable="false" Precision="7" sap:label="Zeitstempel"
+            </EntityType>
+            <EntityType Name="Sparte" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Name"/>
+                </Key>
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Sparte"
                           sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
             <EntityContainer Name="ZVG_15D_41_42_HA_SRV_Entities" m:IsDefaultEntityContainer="true"
                              sap:supported-formats="atom json xlsx">
+                <EntitySet Name="WarengruppeSet" EntityType="ZVG_15D_41_42_HA_SRV.Warengruppe" sap:creatable="false"
+                           sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <EntitySet Name="ProduktSet" EntityType="ZVG_15D_41_42_HA_SRV.Produkt" sap:creatable="false"
+                           sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="SparteSet" EntityType="ZVG_15D_41_42_HA_SRV.Sparte" sap:creatable="false"
                            sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
             </EntityContainer>
             <atom:link rel="self" href="http://r41z.ucc.ovgu.de/sap/opu/odata/sap/ZVG_15D_41_42_HA_SRV/$metadata"
