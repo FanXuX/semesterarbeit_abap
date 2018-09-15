@@ -174,8 +174,8 @@ sap.ui.define([
                     if (v.type) {
                         value['type'] = v.type;
                     }
-                    if (v.constraint) {
-                        value['constraint'] = v.constraint;
+                    if (v.constraints) {
+                        value['constraints'] = v.constraints;
                     }
                 }
             }
