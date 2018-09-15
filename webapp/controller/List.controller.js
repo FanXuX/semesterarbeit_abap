@@ -52,12 +52,14 @@ sap.ui.define([
 
             this.oProductId = fnGetById('eProductId');
             this.oProductName = fnGetById('eProductName');
+            this.oProductCategory = fnGetById('eProductCategory');
             this.oStdPrice = fnGetById('slStdPrice');
             this.oTable = fnGetById('idProductsTable');
 
             this.filterItems = {
                 'Matnr': fnExtractTextFilterValue(this.oProductId),
                 'Maktx': fnExtractTextFilterValue(this.oProductName),
+                'Matkl': fnExtractTextFilterValue(this.oProductCategory),
                 'Stprs': fnExtractPriceFilterValue(this.oStdPrice)
             };
 
@@ -162,6 +164,7 @@ sap.ui.define([
         onReset: function() {
             this.oProductId.setValue();
             this.oProductName.setValue();
+            this.oProductCategory.setValue();
             this.oStdPrice.setValue();
 
             this.onFilterChange();

@@ -38,11 +38,17 @@
                                     <Input type="Text" id="eProductName" placeholder="{i18n>productNamePlaceholder}"/>
                                 </fb:control>
                             </fb:FilterItem>
-                            <!--<fb:FilterItem name="C" label="{i18n>productCategory}">-->
-                                <!--<fb:control>-->
-                                    <!--<Input type="Text" id="eProductCategory" showValueHelp="true" placeholder="{i18n>productCategoryPlaceholder}"/>-->
-                                <!--</fb:control>-->
-                            <!--</fb:FilterItem>-->
+                            <fb:FilterItem name="C" label="{i18n>productCategory}">
+                                <fb:control>
+                                    <ComboBox type="Text" id="eProductCategory" placeholder="{i18n>productCategoryPlaceholder}"
+                                            items="{
+                                                path: 'product>/WarengruppeSet',
+                                                sorter: { path: 'Name' }
+                                            }">
+                                        <core:Item key="{product>Name}" text="{product>Name}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterItem>
                             <fb:FilterItem name="D" label="{i18n>stdPrice}">
                                 <fb:control>
                                     <ComboBox type="Text" id="slStdPrice" placeholder="{i18n>stdPricePlaceholder}">
