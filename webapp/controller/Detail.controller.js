@@ -127,6 +127,7 @@ sap.ui.define([
         _createCombo: function(prop, bind, key) {
             const id = 'edit_' + prop;
 
+            const combo = new sap.m.ComboBox(id);
             const settings = {
                 change: this.onInputChange.bind(this),
                 selectedKey: "{product>" + prop + "}",
@@ -136,14 +137,20 @@ sap.ui.define([
                         key: "{product>" + key + "}",
                         text: "{product>" + key + "}"
                     }),
+                    events: {
+                        dataReceived: function(ev) {
+                            combo.setBusy(false);
+                        }
+                    },
                     sorter: {
                         path: key
                     }
-                }
+                },
+                busy: true
             };
 
+            combo.applySettings(settings);
 
-            const combo = new sap.m.ComboBox(id, settings);
             this.inputs[id].input = combo;
             this.inputs[id].type = "combo";
             return combo;
