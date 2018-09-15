@@ -4,8 +4,9 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/routing/History",
     "de/nak/productlist/libs/lodash.min",
-    "sap/m/MessageBox"
-], function (BaseController, JSONModel, History, lodash, MessageBox) {
+    "sap/m/MessageBox",
+    "sap/m/MessageToast"
+], function (BaseController, JSONModel, History, lodash, MessageBox, MessageToast) {
     "use strict";
     return BaseController.extend("de.nak.productlist.controller.Detail", {
 
@@ -525,16 +526,18 @@ sap.ui.define([
 
         onSave: function() {
             const fnSuccess = function (oData, res) {
-                // this._setBusy(false);
-                // MessageToast.show(this._getText("changesSentMessage"));
+                this._setBusy(false);
                 this._setEditMode(false);
+                MessageToast.show(this.getText("productSaved"));
             }.bind(this);
 
             const fnError = function (oError) {
-                // this._setBusy(false);
+                this._setBusy(false);
                 this._setEditMode(false);
-                // MessageBox.error(oError.message);
+                MessageBox.error(oError.message);
             }.bind(this);
+
+            this._setBusy(true);
 
             // validate
             const isValid = _(this.inputs)
@@ -550,7 +553,8 @@ sap.ui.define([
                 });
 
             if (!isValid) {
-                MessageBox.error("form invalid");
+                MessageBox.error(this.getText("formInvalid"));
+                this._setBusy(false);
                 return;
             }
 
