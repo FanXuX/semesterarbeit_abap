@@ -7,7 +7,7 @@
           controllerName="de.nak.productlist.controller.Detail">
 
 
-    <ObjectPageLayout id="detailPageLayout" showFooter="{= ${editModeView>/editing}}">
+    <ObjectPageLayout id="detailPageLayout" showFooter="{= ${editModeView>/editing}}" busy="{= ${detailView>/busy}}">
         <headerTitle>
             <ObjectPageHeader id="detailViewHeader"
                               headerDesign="Light"
