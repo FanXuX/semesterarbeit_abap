@@ -50,8 +50,8 @@ sap.ui.define([
             this.inputs = _({
                 edit_Maktx: {mandatory: true},
                 edit_Wrkst: {mandatory: false},
-                edit_Spart: {mandatory: false},
-                edit_Matkl: {mandatory: false},
+                edit_Spart: {mandatory: true},
+                edit_Matkl: {mandatory: true},
                 edit_Laeng: {mandatory: false},
                 edit_Breit: {mandatory: false},
                 edit_Hoehe: {mandatory: false},
@@ -61,6 +61,7 @@ sap.ui.define([
                 .mapValues(function(v, k) {
                     return {
                         input: null,
+                        type: null,
                         mandatory: v.mandatory
                     }
                 })
@@ -122,6 +123,31 @@ sap.ui.define([
             return label;
         },
 
+        _createCombo: function(prop, bind, key) {
+            const id = 'edit_' + prop;
+
+            const settings = {
+                change: this.onInputChange.bind(this),
+                selectedKey: "{product>" + prop + "}",
+                items: {
+                    path: bind,
+                    template: new sap.ui.core.Item({
+                        key: "{product>" + key + "}",
+                        text: "{product>" + key + "}"
+                    }),
+                    sorter: {
+                        path: key
+                    }
+                }
+            };
+
+
+            const combo = new sap.m.ComboBox(id, settings);
+            this.inputs[id].input = combo;
+            this.inputs[id].type = "combo";
+            return combo;
+        },
+
         _createInput: function(prop, conf) {
             const id = 'edit_' + prop;
 
@@ -156,6 +182,7 @@ sap.ui.define([
             const input = new sap.m.Input(id, settings);
 
             this.inputs[id].input = input;
+            this.inputs[id].type = "text";
 
             return input;
         },
@@ -257,27 +284,13 @@ sap.ui.define([
                 this._createLabel("branche"),
                 this._createText("Mbrsh"),
                 this._createLabel("sector", "Spart"),
-                this._createInput("Spart", {
-                    value: {
-                        type : 'sap.ui.model.type.String',
-                        constraints : {
-                            maxLength: 2
-                        }
-                    }
-                }),
+                this._createCombo("Spart", "product>/SparteSet", "Name"),
 
                 this._createTitle("purchasingData"),
                 this._createLabel("procurement"),
                 this._createText("Beskz"),
                 this._createLabel("productCategory", "Matkl"),
-                this._createInput("Matkl", {
-                    value: {
-                        type : 'sap.ui.model.type.String',
-                        constraints : {
-                            maxLength: 9
-                        }
-                    }
-                }),
+                this._createCombo("Matkl", "product>/WarengruppeSet", "Name"),
             ];
 
             const technicalContent = [
@@ -454,7 +467,7 @@ sap.ui.define([
 
         },
 
-        _validate: function(input, isMandatory) {
+        _validate: function(input, isMandatory, type) {
             const valueBinding = input.getBinding("value");
             const value = input.getValue();
 
@@ -462,10 +475,20 @@ sap.ui.define([
 
             if (!isMandatory || (isMandatory && value)) {
                 try {
-                    valueBinding.getType().validateValue(value);
-                    isValid = true;
+                    switch (type) {
+                        case "text":
+                            valueBinding.getType().validateValue(value);
+                            isValid = true;
+                            break;
+                        case "combo":
+                            const values = input.getKeys();
+                            isValid = values.includes(value);
+                            break;
+                        default:
+                            // unknown type => auto fail
+                    }
                 } catch (e) {
-                    // Error found
+                    // Error found => fail
                 }
             }
 
@@ -485,8 +508,9 @@ sap.ui.define([
             }
             const prop = match[1];
             const input = event.getSource();
+            const validationSettings = this.inputs["edit_" + prop];
 
-            if (!this._validate(input, this.inputs["edit_" + prop].mandatory)) {
+            if (!this._validate(input, validationSettings.mandatory, validationSettings.type)) {
                 // found an error
                 return;
             }
@@ -518,7 +542,8 @@ sap.ui.define([
                 .map(function(v) {
                     const input = v.input;
                     const isMandatory = v.mandatory;
-                    return this._validate(input, isMandatory);
+                    const type = v.type
+                    return this._validate(input, isMandatory, type);
                 }.bind(this))
                 .every(function (value) {
                     return value;
