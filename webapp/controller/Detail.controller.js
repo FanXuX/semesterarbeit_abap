@@ -63,6 +63,7 @@ sap.ui.define([
                     return {
                         input: null,
                         type: null,
+                        constraints: null,
                         mandatory: v.mandatory
                     }
                 })
@@ -154,6 +155,32 @@ sap.ui.define([
             this.inputs[id].input = combo;
             this.inputs[id].type = "combo";
             return combo;
+        },
+
+        _createNumberInput: function(prop, conf) {
+            const id = 'edit_' + prop;
+
+            const value = {
+                path: 'product>' + prop,
+            };
+
+            const settings = {
+                valueLiveUpdate: true,
+                liveChange: this.onInputChange.bind(this),
+                value: value
+            };
+
+            if (conf.description) {
+                settings['description'] = conf.description
+            }
+
+            const input = new sap.m.Input(id, settings);
+
+            this.inputs[id].input = input;
+            this.inputs[id].type = "number";
+            this.inputs[id].constraints = conf.constraints;
+
+            return input;
         },
 
         _createInput: function(prop, conf) {
@@ -304,65 +331,50 @@ sap.ui.define([
             const technicalContent = [
                 this._createTitle("dimensions"),
                 this._createLabel("length", "Laeng"),
-                this._createInput("Laeng", {
-                    type: "Number",
+                this._createNumberInput("Laeng", {
                     description: "{product>Meabm}",
-                    value: {
-                        type : 'sap.ui.model.type.Float',
-                        constraints : {
-                            minimum: 0,
-                            maximum: 99999999
-                        }
+                    constraints : {
+                        minimum: 0,
+                        maximum: 99999999,
+                        precision: 3
                     }
                 }),
                 this._createLabel("width", "Breit"),
-                this._createInput("Breit", {
-                    type: "Number",
+                this._createNumberInput("Breit", {
                     description: "{product>Meabm}",
-                    value: {
-                        type : 'sap.ui.model.type.Float',
-                        constraints : {
-                            minimum: 0,
-                            maximum: 99999999
-                        }
+                    constraints : {
+                        minimum: 0,
+                        maximum: 99999999,
+                        precision: 3
                     }
                 }),
                 this._createLabel("height", "Hoehe"),
-                this._createInput("Hoehe", {
-                    type: "Number",
+                this._createNumberInput("Hoehe", {
                     description: "{product>Meabm}",
-                    value: {
-                        type : 'sap.ui.model.type.Float',
-                        constraints : {
-                            minimum: 0,
-                            maximum: 99999999
-                        }
+                    constraints : {
+                        minimum: 0,
+                        maximum: 99999999,
+                        precision: 3
                     }
                 }),
 
                 this._createTitle("weight"),
                 this._createLabel("grossWeight", "Brgew"),
-                this._createInput("Brgew", {
-                    type: "Number",
+                this._createNumberInput("Brgew", {
                     description: "{product>Gewei}",
-                    value: {
-                        type : 'sap.ui.model.type.Float',
-                        constraints : {
-                            minimum: 0,
-                            maximum: 99999999
-                        }
+                    constraints : {
+                        minimum: 0,
+                        maximum: 99999999,
+                        precision: 3
                     }
                 }),
                 this._createLabel("netWeight", "Ntgew"),
-                this._createInput("Ntgew", {
-                    type: "Number",
+                this._createNumberInput("Ntgew", {
                     description: "{product>Gewei}",
-                    value: {
-                        type : 'sap.ui.model.type.Float',
-                        constraints : {
-                            minimum: 0,
-                            maximum: 99999999
-                        }
+                    constraints : {
+                        minimum: 0,
+                        maximum: 99999999,
+                        precision: 3
                     }
                 }),
             ];
@@ -475,7 +487,7 @@ sap.ui.define([
 
         },
 
-        _validate: function(input, isMandatory, type) {
+        _validate: function(input, isMandatory, type, constraints) {
             const valueBinding = input.getBinding("value");
             const value = input.getValue();
 
@@ -491,6 +503,26 @@ sap.ui.define([
                         case "combo":
                             const values = input.getKeys();
                             isValid = values.includes(value);
+                            break;
+                        case "number":
+                            const num = Number(value);
+                            if (!isNaN(num)) {
+                                if (typeof constraints.minimum !== 'undefined' && num < constraints.minimum) {
+                                    break;
+                                }
+                                if (typeof constraints.maximum !== 'undefined' && num > constraints.maximum) {
+                                    break;
+                                }
+                                if (typeof constraints.precision !== 'undefined' && constraints.precision >= 0) {
+
+                                    const regex = new RegExp("^\\d+(\\.\\d{0," + constraints.precision + "})?$");
+                                    const match = regex.exec(value);
+                                    if (!match) {
+                                        break;
+                                    }
+                                }
+                                isValid = true;
+                            }
                             break;
                         default:
                             // unknown type => auto fail
@@ -518,7 +550,7 @@ sap.ui.define([
             const input = event.getSource();
             const validationSettings = this.inputs["edit_" + prop];
 
-            if (!this._validate(input, validationSettings.mandatory, validationSettings.type)) {
+            if (!this._validate(input, validationSettings.mandatory, validationSettings.type, validationSettings.constraints)) {
                 // found an error
                 return;
             }
@@ -552,8 +584,9 @@ sap.ui.define([
                 .map(function(v) {
                     const input = v.input;
                     const isMandatory = v.mandatory;
-                    const type = v.type
-                    return this._validate(input, isMandatory, type);
+                    const type = v.type;
+                    const constraints = v.constraints;
+                    return this._validate(input, isMandatory, type, constraints);
                 }.bind(this))
                 .every(function (value) {
                     return value;
