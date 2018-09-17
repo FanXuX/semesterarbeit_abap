@@ -435,18 +435,18 @@ sap.ui.define([
          * navigate back to list view
          */
         onNavButtonPress: function () {
-            this._onAbort();
+            this.onAbort(function() {
+                //check if there is ui5 history
+                var history = History.getInstance();
+                var previousHash = history.getPreviousHash();
 
-            //check if there is ui5 history
-            var history = History.getInstance();
-            var previousHash = history.getPreviousHash();
-
-            if (previousHash !== undefined) {
-                window.history.go(-1);
-            } else {
-                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                oRouter.navTo("list", {}, true);
-            }
+                if (previousHash !== undefined) {
+                    window.history.go(-1);
+                } else {
+                    var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                    oRouter.navTo("list", {}, true);
+                }
+            }.bind(this));
         },
 
         _setBusy: function(isBusy) {
@@ -482,7 +482,7 @@ sap.ui.define([
 
         onEdit: function () {
             if (this._getEditMode()) {
-                this._onAbort();
+                this.onAbort();
             } else {
                 this._setEditMode(true)
             }
@@ -615,42 +615,48 @@ sap.ui.define([
 
         },
 
-        onAbort: function() {
+        onAbort: function(exec) {
             const editModel = this.getModel("editModeView");
 
             const isChanged = editModel.getProperty("/changed");
 
             if (isChanged) {
                 MessageBox.confirm(this.getText("abortEdit"), {
-                    title: "bla",
-                    onClose: this.handleAbortClose.bind(this)
+                    title: this.getText("abortEditTitle"),
+                    onClose: this.handleAbortClose(exec).bind(this)
                 });
             } else {
-                this._onAbort();
+                this._onAbort(exec);
             }
         },
 
-        handleAbortClose(event) {
+        handleAbortClose(exec) {
 
-            switch (event) {
-                case MessageBox.Action.OK:
-                    this._onAbort();
-                    break;
-                case MessageBox.Action.Cancel:
-                    // do nothing
-                    break;
+            return function(event) {
+                switch (event) {
+                    case MessageBox.Action.OK:
+                        this._onAbort(exec);
+                        break;
+                    case MessageBox.Action.Cancel:
+                        // do nothing
+                        break;
 
-                default:
+                    default:
                     //not handled
-            }
+                }
+            };
         },
 
-        _onAbort: function() {
+        _onAbort: function(exec) {
             const editModel = this.getModel("editModeView");
             this.getModel("product").resetChanges();
 
             const changedData = editModel.setProperty("/data", {});
             this._setEditMode(false);
+
+            if (typeof exec === "function") {
+                exec();
+            }
         },
     })
 });
