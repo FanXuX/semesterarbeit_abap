@@ -28,6 +28,7 @@ sap.ui.define([
 
             const editModeModel = new JSONModel({
                 editing: false,
+                changed: false,
                 productId: null,
                 data: {}
             });
@@ -434,7 +435,7 @@ sap.ui.define([
          * navigate back to list view
          */
         onNavButtonPress: function () {
-            this.onAbort();
+            this._onAbort();
 
             //check if there is ui5 history
             var history = History.getInstance();
@@ -464,6 +465,7 @@ sap.ui.define([
             const editModeModel = this.getModel("editModeView");
 
             editModeModel.setProperty("/editing", isEdit);
+            editModeModel.setProperty("/changed", false);
 
             if (isEdit) {
                 this._onEditMode();
@@ -480,7 +482,7 @@ sap.ui.define([
 
         onEdit: function () {
             if (this._getEditMode()) {
-                this.onAbort();
+                this._onAbort();
             } else {
                 this._setEditMode(true)
             }
@@ -538,6 +540,9 @@ sap.ui.define([
 
         onInputChange: function(event) {
             const re = /^.*edit_([a-zA-Z]{5})$/;
+            const editModel = this.getModel("editModeView");
+
+            editModel.setProperty("/changed", true);
 
             const elementId = event.getParameters().id;
             const value = event.getParameters().value;
@@ -555,7 +560,7 @@ sap.ui.define([
                 return;
             }
 
-            const editModel = this.getModel("editModeView");
+
             const data = editModel.getProperty("/data");
 
             data[prop] = value;
@@ -611,6 +616,36 @@ sap.ui.define([
         },
 
         onAbort: function() {
+            const editModel = this.getModel("editModeView");
+
+            const isChanged = editModel.getProperty("/changed");
+
+            if (isChanged) {
+                MessageBox.confirm(this.getText("abortEdit"), {
+                    title: "bla",
+                    onClose: this.handleAbortClose.bind(this)
+                });
+            } else {
+                this._onAbort();
+            }
+        },
+
+        handleAbortClose(event) {
+
+            switch (event) {
+                case MessageBox.Action.OK:
+                    this._onAbort();
+                    break;
+                case MessageBox.Action.Cancel:
+                    // do nothing
+                    break;
+
+                default:
+                    //not handled
+            }
+        },
+
+        _onAbort: function() {
             const editModel = this.getModel("editModeView");
             this.getModel("product").resetChanges();
 
