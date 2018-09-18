@@ -168,12 +168,11 @@ sap.ui.define([
             const settings = {
                 valueLiveUpdate: true,
                 liveChange: this.onInputChange.bind(this),
-                value: value
+                value: value,
+                editable: '{= ${product>' + conf.description + '} !== ""}'
             };
 
-            if (conf.description) {
-                settings['description'] = conf.description
-            }
+            settings['description'] = "{product>" + conf.description + "}";
 
             const input = new sap.m.Input(id, settings);
 
@@ -333,7 +332,7 @@ sap.ui.define([
                 this._createTitle("dimensions"),
                 this._createLabel("length", "Laeng"),
                 this._createNumberInput("Laeng", {
-                    description: "{product>Meabm}",
+                    description: "Meabm",
                     constraints : {
                         minimum: 0,
                         maximum: 99999999,
@@ -342,7 +341,7 @@ sap.ui.define([
                 }),
                 this._createLabel("width", "Breit"),
                 this._createNumberInput("Breit", {
-                    description: "{product>Meabm}",
+                    description: "Meabm",
                     constraints : {
                         minimum: 0,
                         maximum: 99999999,
@@ -351,7 +350,7 @@ sap.ui.define([
                 }),
                 this._createLabel("height", "Hoehe"),
                 this._createNumberInput("Hoehe", {
-                    description: "{product>Meabm}",
+                    description: "Meabm",
                     constraints : {
                         minimum: 0,
                         maximum: 99999999,
@@ -362,7 +361,7 @@ sap.ui.define([
                 this._createTitle("weight"),
                 this._createLabel("grossWeight", "Brgew"),
                 this._createNumberInput("Brgew", {
-                    description: "{product>Gewei}",
+                    description: "Gewei",
                     constraints : {
                         minimum: 0,
                         maximum: 99999999,
@@ -371,7 +370,7 @@ sap.ui.define([
                 }),
                 this._createLabel("netWeight", "Ntgew"),
                 this._createNumberInput("Ntgew", {
-                    description: "{product>Gewei}",
+                    description: "Gewei",
                     constraints : {
                         minimum: 0,
                         maximum: 99999999,
