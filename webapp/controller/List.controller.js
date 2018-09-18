@@ -33,7 +33,6 @@ sap.ui.define([
                         switch (combo.getSelectedKey()) {
                             case "001":
                                 return [0, 50];
-
                             case "002":
                                 return [50, 100];
                             case "003":
@@ -150,7 +149,7 @@ sap.ui.define([
          */
         handleSortDialogButtonPressed: function (oEvent) {
             if (!this._oDialog) {
-                this._oDialog = sap.ui.xmlfragment("de.nak.productlist.fragment.SortDialog", this);
+                this._oDialog = sap.ui.xmlfragment("de.nak.productlist.view.SortDialog", this);
                 var i18nModel = new sap.ui.model.resource.ResourceModel({
                     bundleUrl : "../i18n/i18n.properties"
                 });

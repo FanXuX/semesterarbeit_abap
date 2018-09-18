@@ -246,7 +246,7 @@ sap.ui.define([
         _onViewMode: function() {
 
             const generalContent = [
-                this._createTitle("discription"),
+                this._createTitle("description"),
                 this._createLabel("productName"),
                 this._createText("Maktx"),
 
@@ -292,7 +292,7 @@ sap.ui.define([
             this._initInputs();
 
             const generalContent = [
-                this._createTitle("discription"),
+                this._createTitle("description"),
                 this._createLabel("productName", "Maktx"),
                 this._createInput("Maktx", {
                     value: {

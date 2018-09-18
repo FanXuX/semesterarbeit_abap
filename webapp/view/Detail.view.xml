@@ -100,8 +100,8 @@
         <footer>
             <m:Toolbar>
                 <m:ToolbarSpacer/>
-                <m:Button text="Save" type="Accept" press="onSave"/>
-                <m:Button text="Abort" type="Reject" press="onAbort"/>
+                <m:Button text="{i18n>save}" type="Accept" press="onSave"/>
+                <m:Button text="{i18n>abort}" type="Reject" press="onAbort"/>
             </m:Toolbar>
         </footer>
 
