@@ -74,7 +74,10 @@
                     inset="false"
                     items="{
                             path: 'product>/ProduktSet'
-                        }">
+                        }"
+                    growing="true"
+                    growingThreshold="100"
+                    enableBusyIndicator="true">
 
                 <headerToolbar>
                     <Toolbar>
