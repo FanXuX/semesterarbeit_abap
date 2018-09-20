@@ -52,8 +52,8 @@ sap.ui.define([
             this.inputs = _({
                 edit_Maktx: {mandatory: true},
                 edit_Wrkst: {mandatory: false},
-                edit_Spart: {mandatory: true},
-                edit_Matkl: {mandatory: true},
+                edit_Spart: {mandatory: false},
+                edit_Matkl: {mandatory: false},
                 edit_Laeng: {mandatory: false},
                 edit_Breit: {mandatory: false},
                 edit_Hoehe: {mandatory: false},
@@ -503,7 +503,7 @@ sap.ui.define([
                             break;
                         case "combo":
                             const values = input.getKeys();
-                            isValid = values.includes(value);
+                            isValid = values.includes(value) || (!isMandatory && !value);
                             break;
                         case "number":
                             const num = Number(value);
