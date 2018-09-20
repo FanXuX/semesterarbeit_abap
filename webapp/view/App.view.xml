@@ -3,7 +3,6 @@
           controllerName="de.nak.productlist.controller.App"
           displayBlock="true">
 
-    <!--TODO: fix shell style and added user icon-->
         <App id="app"></App>
 
 </mvc:View>

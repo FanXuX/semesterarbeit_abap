@@ -319,13 +319,13 @@ sap.ui.define([
                 this._createLabel("branche"),
                 this._createText("Mbrsh"),
                 this._createLabel("sector", "Spart"),
-                this._createCombo("Spart", "product>/SparteSet", "Name"),
+                this._createCombo("Spart", "product>/SparteSet", "Spart"),
 
                 this._createTitle("purchasingData"),
                 this._createLabel("procurement"),
                 this._createText("Beskz"),
                 this._createLabel("productCategory", "Matkl"),
-                this._createCombo("Matkl", "product>/WarengruppeSet", "Name"),
+                this._createCombo("Matkl", "product>/WarengruppeSet", "Matkl"),
             ];
 
             const technicalContent = [
