@@ -6,7 +6,7 @@
 	<title>Produktmanagement App</title>
 	<script
 		id="sap-ui-bootstrap"
-        src="https://r41z.ucc.ovgu.de/zvg_ui5_1_54/resources/sap-ui-core.js"
+        src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
         data-sap-ui-theme="sap_belize"
 		data-sap-ui-libs="sap.m"
 		data-sap-ui-preload="async"
@@ -17,8 +17,14 @@
 	</script>
 	<script>
         sap.ui.getCore().attachInit(function () {
-            new sap.ui.core.ComponentContainer({
-                name : "de.nak.productlist"
+            new sap.m.Shell({
+                app: new sap.ui.core.ComponentContainer({
+                    height: "100%",
+                    name: "de.nak.productlist",
+                    settings: {
+                        id: "productlist"
+                    }
+                })
             }).placeAt("content");
         });
 	</script>
