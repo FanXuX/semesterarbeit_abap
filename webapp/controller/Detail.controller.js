@@ -603,13 +603,19 @@ sap.ui.define([
             }
 
             const editModel = this.getModel("editModeView");
+            const productModel = this.getModel("product");
 
             const productId = editModel.getProperty("/productId");
-            const changedData = editModel.getProperty("/data");
+            const path = "/ProduktSet('" + productId + "')";
+            const originalData = Object.assign({}, productModel.getData(path));
+            const changes = editModel.getProperty("/data");
+            const changedData = Object.assign(originalData, changes);
 
-            this.getModel("product").update("/ProduktSet('" + productId + "')", changedData, {
+
+            this.getModel("product").update(path, changedData, {
                 success: fnSuccess,
-                error: fnError
+                error: fnError,
+                merge: false
             });
 
         },
