@@ -107,7 +107,7 @@
                             <Label text="{i18n>productCategory}"/>
                         </header>
                     </Column>
-                    <Column id="columnPrice">
+                    <Column id="columnStdPrice">
                         <header>
                             <Label text="{i18n>stdPrice}"/>
                         </header>
@@ -115,7 +115,7 @@
                 </columns>
 
                 <items>
-                    <ColumnListItem type="Active" id="item0" press="onItemPress">
+                    <ColumnListItem type="Active" id="tableItem" press="onItemPress">
                         <cells>
                             <Text text="{product>Matnr}"/>
                             <Text text="{product>Maktx}"/>

@@ -1,7 +1,7 @@
 <core:FragmentDefinition
         xmlns="sap.m"
         xmlns:core="sap.ui.core">
-    <ViewSettingsDialog title="{i18n>sortDialog}" confirm="handleConfirm">
+    <ViewSettingsDialog title="{i18n>sortDialog}" confirm="handleSortConfirm">
 
         <sortItems>
             <ViewSettingsItem text="{i18n>productId}" key="Matnr" selected="true" />

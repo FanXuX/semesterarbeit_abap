@@ -38,7 +38,7 @@ sap.ui.define([
                             case "003":
                                 return [100, 500];
                             case "004":
-                                return [500, Number.MAX_VALUE];
+                                return [500, 99999999999];
                             default:
                                 return [];
                         }
@@ -77,13 +77,13 @@ sap.ui.define([
                     var key, text;
                     if (price <= 100) {
                         key = "LE100";
-                        text = "100 " + currencyCode + " or less";
+                        text = "{i18n>stdPrice} <= 100";
                     } else if (price <= 1000) {
                         key = "BT100-1000";
-                        text = "Between 100 and 1000 " + currencyCode;
+                        text = "100 < {i18n>stdPrice} <= 1000";
                     } else {
                         key = "GT1000";
-                        text = "More than 1000 " + currencyCode;
+                        text = "{i18n>stdPrice} > 1000";
                     }
                     return {
                         key: key,
@@ -118,7 +118,7 @@ sap.ui.define([
          * Execute Sorting with group function
          * @param oEvent
          */
-        handleConfirm: function(oEvent) {
+        handleSortConfirm: function(oEvent) {
 
             var oView = this.getView();
             var oTable = oView.byId("idProductsTable");

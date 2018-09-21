@@ -17,7 +17,7 @@
                     <m:Bar>
                         <m:contentLeft>
                             <m:Button icon="sap-icon://nav-back"
-                                      tooltip="nav-back"
+                                      tooltip="{i18>nav-back}"
                                       press="onNavButtonPress"/>
                         </m:contentLeft>
                         <m:contentMiddle>
@@ -27,9 +27,9 @@
                 </navigationBar>
                 <actions>
                     <ObjectPageHeaderActionButton icon="sap-icon://edit"
-                                                  text="edit"
+                                                  text="{i18n>edit}"
                                                   importance="Medium"
-                                                  tooltip="edit"
+                                                  tooltip="{i18n>edit}"
                                                   press="onEdit"/>
                 </actions>
             </ObjectPageHeader>
