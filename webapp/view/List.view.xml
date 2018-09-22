@@ -82,7 +82,7 @@
                 <headerToolbar>
                     <Toolbar>
                         <ToolbarSpacer/>
-                        <Button tooltip="{i18n>Sort}" icon="sap-icon://sort" press="handleSortDialogButtonPressed" />
+                        <Button tooltip="{i18n>sort}" icon="sap-icon://sort" press="handleSortDialogButtonPressed" />
                     </Toolbar>
                 </headerToolbar>
 

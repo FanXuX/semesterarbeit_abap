@@ -577,7 +577,16 @@ sap.ui.define([
             const fnError = function (oError) {
                 this._setBusy(false);
                 this._setEditMode(false);
-                MessageBox.error(oError.message);
+
+                let errorMsg = this.getText("genericError");
+
+                try {
+                    errorMsg = JSON.parse(oError.responseText).error.message.value;
+                } catch (e) {
+                    console.error("unable to retrieve backend server error message", e);
+                }
+
+                MessageBox.error(errorMsg);
             }.bind(this);
 
             this._setBusy(true);
