@@ -94,25 +94,13 @@ sap.ui.define([
             };
 
             // create product category data
-            const productCategoryModel = new JSONModel({
-               categories: []
-            });
-            this.setModel(productCategoryModel, "productCategory");
-
-            const productModel = this.getOwnerComponent().getModel("product");
-
-            productModel.read("/WarengruppeSet", { success: function(data) {
-                const categories = data.results.map(function(c) {
-                    const name = c.Matkl === "XX" ? this.getText("emptyProductCategory") : c.Matkl;
-                    return {
-                        key: c.Matkl,
-                        name: name
-                    };
-                }.bind(this));
-
-                this.getModel("productCategory").setProperty("/categories", categories);
-
-            }.bind(this)});
+            this.createProductCategoryModel(function(c) {
+                const name = c.Matkl === "XX" ? this.getText("emptyProductCategory") : c.Matkl;
+                return {
+                    key: c.Matkl,
+                    name: name
+                };
+            }.bind(this));
         },
 
         /**

@@ -45,31 +45,18 @@ sap.ui.define([
                 }.bind(this)
             );
 
-            const productCategoryModel = new JSONModel({
-                categories: []
-            });
-            this.setModel(productCategoryModel, "productCategory");
-
-            const productModel = this.getOwnerComponent().getModel("product");
-
-            productModel.read("/WarengruppeSet", { success: function(data) {
-                    const categories = data.results
-                        .map(function(c) {
-                        if (c.Matkl === "XX") {
-                            return  {
-                                key: "",
-                                name: ""
-                            };
-                        }
-                        return {
-                            key: c.Matkl,
-                            name: c.Matkl
-                        };
-                    }.bind(this));
-
-                    this.getModel("productCategory").setProperty("/categories", categories);
-
-                }.bind(this)});
+            this.createProductCategoryModel(function(c) {
+                if (c.Matkl === "XX") {
+                    return  {
+                        key: "",
+                        name: ""
+                    };
+                }
+                return {
+                    key: c.Matkl,
+                    name: c.Matkl
+                };
+            }.bind(this));
 
             this._onViewMode();
         },

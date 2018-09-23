@@ -1,6 +1,7 @@
 sap.ui.define([
-        "sap/ui/core/mvc/Controller"
-    ], function (Controller) {
+        "sap/ui/core/mvc/Controller",
+        "sap/ui/model/json/JSONModel",
+    ], function (Controller, JSONModel) {
         "use strict";
 
         return Controller.extend("de.nak.productlist.controller.BaseController", {
@@ -45,6 +46,24 @@ sap.ui.define([
 
             getText: function (code) {
                 return this.getView().getModel("i18n").getResourceBundle().getText(code);
+            },
+
+            createProductCategoryModel(mapFunc) {
+                const productCategoryModel = new JSONModel({
+                    categories: []
+                });
+                this.setModel(productCategoryModel, "productCategory");
+
+                const productModel = this.getOwnerComponent().getModel("product");
+
+                productModel.read("/WarengruppeSet", { success: function(data) {
+                        const categories = data.results
+                            .map(mapFunc);
+
+                        this.getModel("productCategory").setProperty("/categories", categories);
+
+                    }.bind(this)});
+
             }
         });
 
