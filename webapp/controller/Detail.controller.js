@@ -45,6 +45,32 @@ sap.ui.define([
                 }.bind(this)
             );
 
+            const productCategoryModel = new JSONModel({
+                categories: []
+            });
+            this.setModel(productCategoryModel, "productCategory");
+
+            const productModel = this.getOwnerComponent().getModel("product");
+
+            productModel.read("/WarengruppeSet", { success: function(data) {
+                    const categories = data.results
+                        .map(function(c) {
+                        if (c.Matkl === "XX") {
+                            return  {
+                                key: "",
+                                name: ""
+                            };
+                        }
+                        return {
+                            key: c.Matkl,
+                            name: c.Matkl
+                        };
+                    }.bind(this));
+
+                    this.getModel("productCategory").setProperty("/categories", categories);
+
+                }.bind(this)});
+
             this._onViewMode();
         },
 
@@ -124,6 +150,32 @@ sap.ui.define([
             }
 
             return label;
+        },
+
+        _createProductCategoryCombo: function(prop) {
+            const id = 'edit_' + prop;
+
+            const combo = new sap.m.ComboBox(id);
+            const settings = {
+                change: this.onInputChange.bind(this),
+                selectedKey: "{product>Matkl}",
+                items: {
+                    path: "productCategory>/categories",
+                    template: new sap.ui.core.Item({
+                        key: "{productCategory>key}",
+                        text: "{productCategory>name}"
+                    }),
+                    sorter: {
+                        path: "key"
+                    }
+                }
+            };
+
+            combo.applySettings(settings);
+
+            this.inputs[id].input = combo;
+            this.inputs[id].type = "combo";
+            return combo;
         },
 
         _createCombo: function(prop, bind, key) {
@@ -325,7 +377,7 @@ sap.ui.define([
                 this._createLabel("procurement"),
                 this._createText("Beskz"),
                 this._createLabel("productCategory", "Matkl"),
-                this._createCombo("Matkl", "product>/WarengruppeSet", "Matkl"),
+                this._createProductCategoryCombo("Matkl"),
             ];
 
             const technicalContent = [
@@ -490,7 +542,7 @@ sap.ui.define([
 
         _validate: function(input, isMandatory, type, constraints) {
             const valueBinding = input.getBinding("value");
-            const value = input.getValue();
+            const value = type === "combo" ? input.getSelectedKey() : input.getValue();
 
             let isValid = false;
 
@@ -544,7 +596,8 @@ sap.ui.define([
             editModel.setProperty("/changed", true);
 
             const elementId = event.getParameters().id;
-            const value = event.getParameters().value;
+            // why is this the text instead of the key on combo boxes?!
+            let value = event.getParameters().value;
 
             const match = re.exec(elementId);
             if (!match) {
@@ -557,6 +610,10 @@ sap.ui.define([
             if (!this._validate(input, validationSettings.mandatory, validationSettings.type, validationSettings.constraints)) {
                 // found an error
                 return;
+            }
+
+            if (validationSettings.type === "combo") {
+                value = input.getSelectedKey();
             }
 
 
