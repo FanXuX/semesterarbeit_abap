@@ -1,10 +1,11 @@
 /* global _:true */
 sap.ui.define([
     "de/nak/productlist/controller/BaseController",
+    "sap/ui/model/json/JSONModel",
     'sap/ui/model/Filter',
     'sap/ui/model/Sorter',
     "de/nak/productlist/libs/lodash.min"
-], function (BaseController, Filter, Sorter, lodash) {
+], function (BaseController, JSONModel, Filter, Sorter, lodash) {
     "use strict";
     return BaseController.extend("de.nak.productlist.controller.List", {
 
@@ -91,6 +92,27 @@ sap.ui.define([
                     };
                 }
             };
+
+            // create product category data
+            const productCategoryModel = new JSONModel({
+               categories: []
+            });
+            this.setModel(productCategoryModel, "productCategory");
+
+            const productModel = this.getOwnerComponent().getModel("product");
+
+            productModel.read("/WarengruppeSet", { success: function(data) {
+                const categories = data.results.map(function(c) {
+                    const name = c.Matkl === "XX" ? this.getText("emptyProductCategory") : c.Matkl;
+                    return {
+                        key: c.Matkl,
+                        name: name
+                    };
+                }.bind(this));
+
+                this.getModel("productCategory").setProperty("/categories", categories);
+
+            }.bind(this)});
         },
 
         /**
@@ -203,6 +225,12 @@ sap.ui.define([
 
 
             fnDoFilter(fnExtractFilterValues(this.filterItems));
+        },
+
+        onWarengruppeReceived: function(event) {
+            const values = event.getParameters().data.results;
+
+            values.map
         }
     })
 });

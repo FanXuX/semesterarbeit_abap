@@ -42,10 +42,10 @@
                                 <fb:control>
                                     <ComboBox type="Text" id="eProductCategory" placeholder="{i18n>productCategoryPlaceholder}"
                                             items="{
-                                                path: 'product>/WarengruppeSet',
-                                                sorter: { path: 'Matkl' }
+                                                path: 'productCategory>/categories',
+                                                sorter: { path: 'key' }
                                             }">
-                                        <core:Item key="{product>Matkl}" text="{product>Matkl}" />
+                                        <core:Item key="{productCategory>key}" text="{productCategory>name}" />
                                     </ComboBox>
                                 </fb:control>
                             </fb:FilterItem>
