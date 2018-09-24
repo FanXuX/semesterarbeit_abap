@@ -28,6 +28,17 @@ sap.ui.define([
                 };
             };
 
+            const fnExtractComboFilterValue = function(edit) {
+                return {
+                    value() {
+                        return edit.getSelectedKey();
+                    },
+                    op() {
+                        return sap.ui.model.FilterOperator.Contains;
+                    }
+                };
+            };
+
             const fnExtractPriceFilterValue = function(combo) {
                 return {
                     value() {
@@ -59,7 +70,7 @@ sap.ui.define([
             this.filterItems = {
                 'Matnr': fnExtractTextFilterValue(this.oProductId),
                 'Maktx': fnExtractTextFilterValue(this.oProductName),
-                'Matkl': fnExtractTextFilterValue(this.oProductCategory),
+                'Matkl': fnExtractComboFilterValue(this.oProductCategory),
                 'Stprs': fnExtractPriceFilterValue(this.oStdPrice)
             };
 
@@ -213,12 +224,8 @@ sap.ui.define([
 
 
             fnDoFilter(fnExtractFilterValues(this.filterItems));
-        },
-
-        onWarengruppeReceived: function(event) {
-            const values = event.getParameters().data.results;
-
-            values.map
         }
+
+
     })
 });
