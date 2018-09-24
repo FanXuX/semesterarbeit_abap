@@ -232,7 +232,8 @@ sap.ui.define([
             const settings = {
                 valueLiveUpdate: true,
                 liveChange: this.onInputChange.bind(this),
-                value: value
+                value: value,
+                valueStateText: this.getText(conf.errorText)
             };
 
             if (conf) {
@@ -338,7 +339,8 @@ sap.ui.define([
                         constraints : {
                             maxLength: 40
                         }
-                    }
+                    },
+                    errorText: this.getText('productNameValidation')
                 }),
 
                 this._createTitle("materialInfo"),
@@ -349,9 +351,10 @@ sap.ui.define([
                     value: {
                         type : 'sap.ui.model.type.String',
                         constraints : {
-                            maxLength: 40
+                            maxLength: 48
                         }
-                    }
+                    },
+                    errorText: this.getText('basicMaterialValidation')
                 }),
 
                 this._createTitle("organizationStructure"),
