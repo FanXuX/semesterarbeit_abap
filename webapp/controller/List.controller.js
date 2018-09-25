@@ -203,7 +203,7 @@ sap.ui.define([
         onReset: function() {
             this.oProductId.setValue();
             this.oProductName.setValue();
-            this.oProductCategory.setValue();
+            this.oProductCategory.setSelectedKey();
             this.oStdPrice.setValue();
 
             this.onFilterChange();
