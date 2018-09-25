@@ -15,18 +15,19 @@ sap.ui.define([
          */
         onInit: function () {
 
-            this.generalForm = this.getView().byId("generalForm");
-            this.technicalForm = this.getView().byId("technicalForm");
+            // find changeable froms
+            this.oGeneralForm = this.getView().byId("generalForm");
+            this.oTechnicalForm = this.getView().byId("technicalForm");
 
             this._initInputs();
 
-            var iOriginalBusyDelay,
-                oViewModel = new JSONModel({
+            // setup additional models
+            const oViewModel = new JSONModel({
                     busy : true,
                     delay : 0
                 });
 
-            const editModeModel = new JSONModel({
+            const oEditModeModel = new JSONModel({
                 editing: false,
                 changed: false,
                 productId: null,
@@ -36,15 +37,18 @@ sap.ui.define([
             this.getRouter().getRoute("detail").attachPatternMatched(this._onObjectMatched,
                 this);
 
-            iOriginalBusyDelay = this.getView().getBusyIndicatorDelay();
+            const iOriginalBusyDelay = this.getView().getBusyIndicatorDelay();
             this.setModel(oViewModel, "detailView");
-            this.setModel(editModeModel, "editModeView");
+            this.setModel(oEditModeModel, "editModeView");
+
+            // trigger data load
             this.getOwnerComponent().getModel("product").metadataLoaded().then(function () {
                     oViewModel.setProperty("/delay", iOriginalBusyDelay);
                     this.getModel("product").setUseBatch(true)
                 }.bind(this)
             );
 
+            // setup product categories
             this.createProductCategoryModel(function(c) {
                 if (c.Matkl === "XX") {
                     return  {
@@ -61,8 +65,12 @@ sap.ui.define([
             this._onViewMode();
         },
 
+        /**
+         * create default inputs config
+         * @private
+         */
         _initInputs: function() {
-            this.inputs = _({
+            this.mInputs = _({
                 edit_Maktx: {mandatory: true},
                 edit_Wrkst: {mandatory: false},
                 edit_Spart: {mandatory: false},
@@ -90,7 +98,7 @@ sap.ui.define([
          * @private
          */
         _onObjectMatched: function (oEvent) {
-            var sPath =  oEvent.getParameter("arguments").path;
+            const sPath = oEvent.getParameter("arguments").path;
             this.getModel("product").metadataLoaded().then( function() {
                 var sKey = this.getModel("product").createKey("ProduktSet", {
                     Matnr :  sPath
@@ -102,13 +110,23 @@ sap.ui.define([
             }.bind(this));
         },
 
+        /**
+         * delete everything in the changeable forms
+         * @private
+         */
         _clearForms: function() {
-            _([this.generalForm, this.technicalForm])
+            _([this.oGeneralForm, this.oTechnicalForm])
                 .forEach(function(form) {
                     form.destroyContent();
                 });
         },
 
+        /**
+         * creates a title view component
+         * @param i18n
+         * @return {sap.ui.core.Title}
+         * @private
+         */
         _createTitle: function(i18n) {
             return new sap.ui.core.Title({
                 level: "H3",
@@ -116,34 +134,53 @@ sap.ui.define([
             });
         },
 
-        _createText: function(text) {
-            let value = text;
-            if (!text.startsWith("{")) {
-                value = "{product>" + text + "}";
+        /**
+         * create a text view component
+         * @param sText
+         * @return {sap.m.Text}
+         * @private
+         */
+        _createText: function(sText) {
+            let sValue = sText;
+            if (!sText.startsWith("{")) {
+                sValue = "{product>" + sText + "}";
             }
 
             return new sap.m.Text({
-                text: value
+                text: sValue
             });
         },
 
-        _createLabel: function(i18n, labelFor) {
-            const label = new sap.m.Label({
+        /**
+         * create a label view component
+         * @param i18n
+         * @param sLabelFor
+         * @return {sap.m.Label}
+         * @private
+         */
+        _createLabel: function(i18n, sLabelFor) {
+            const oLabel = new sap.m.Label({
                 text: "{i18n>" + i18n + "}"
             });
 
-            if (labelFor) {
-                label.setLabelFor("edit_" + labelFor);
+            if (sLabelFor) {
+                oLabel.setLabelFor("edit_" + sLabelFor);
             }
 
-            return label;
+            return oLabel;
         },
 
-        _createProductCategoryCombo: function(prop) {
-            const id = 'edit_' + prop;
+        /**
+         * create a combo for product categories
+         * @param sProp
+         * @return {sap.m.ComboBox}
+         * @private
+         */
+        _createProductCategoryCombo: function(sProp) {
+            const sId = 'edit_' + sProp;
 
-            const combo = new sap.m.ComboBox(id);
-            const settings = {
+            const oCombo = new sap.m.ComboBox(sId);
+            const oSettings = {
                 change: this.onInputChange.bind(this),
                 selectedKey: "{product>Matkl}",
                 items: {
@@ -158,133 +195,171 @@ sap.ui.define([
                 }
             };
 
-            combo.applySettings(settings);
+            oCombo.applySettings(oSettings);
 
-            this.inputs[id].input = combo;
-            this.inputs[id].type = "combo";
-            return combo;
+            this.mInputs[sId].input = oCombo;
+            this.mInputs[sId].type = "combo";
+            return oCombo;
         },
 
-        _createCombo: function(prop, bind, key) {
-            const id = 'edit_' + prop;
+        /**
+         * create a combo box
+         * @param sProp product prop
+         * @param sBind bind for values
+         * @param sKey key to show as value
+         * @return {sap.m.ComboBox}
+         * @private
+         */
+        _createCombo: function(sProp, sBind, sKey) {
+            const sId = 'edit_' + sProp;
 
-            const combo = new sap.m.ComboBox(id);
-            const settings = {
+            const oCombo = new sap.m.ComboBox(sId);
+            const oSettings = {
                 change: this.onInputChange.bind(this),
-                selectedKey: "{product>" + prop + "}",
+                selectedKey: "{product>" + sProp + "}",
                 items: {
-                    path: bind,
+                    path: sBind,
                     template: new sap.ui.core.Item({
-                        key: "{product>" + key + "}",
-                        text: "{product>" + key + "}"
+                        key: "{product>" + sKey + "}",
+                        text: "{product>" + sKey + "}"
                     }),
                     events: {
                         dataReceived: function(ev) {
-                            combo.setBusy(false);
+                            oCombo.setBusy(false);
                         }
                     },
                     sorter: {
-                        path: key
+                        path: sKey
                     }
                 },
                 busy: true
             };
 
-            combo.applySettings(settings);
+            oCombo.applySettings(oSettings);
 
-            this.inputs[id].input = combo;
-            this.inputs[id].type = "combo";
-            return combo;
+            this.mInputs[sId].input = oCombo;
+            this.mInputs[sId].type = "combo";
+            return oCombo;
         },
 
-        _createNumberInput: function(prop, conf) {
-            const id = 'edit_' + prop;
+        /**
+         * create a number input
+         * @param sProp product prop
+         * @param oConf field config
+         * @return {sap.m.Input}
+         * @private
+         */
+        _createNumberInput: function(sProp, oConf) {
+            const sId = 'edit_' + sProp;
 
-            const value = {
-                path: 'product>' + prop,
+            const oValue = {
+                path: 'product>' + sProp,
             };
 
-            const settings = {
+            const oSettings = {
                 valueLiveUpdate: true,
                 liveChange: this.onInputChange.bind(this),
-                value: value,
-                editable: '{= ${product>' + conf.description + '} !== ""}'
+                value: oValue,
+                editable: '{= ${product>' + oConf.description + '} !== ""}'
             };
 
-            settings['description'] = "{product>" + conf.description + "}";
+            oSettings['description'] = "{product>" + oConf.description + "}";
 
-            const input = new sap.m.Input(id, settings);
+            const oInput = new sap.m.Input(sId, oSettings);
 
-            this.inputs[id].input = input;
-            this.inputs[id].type = "number";
-            this.inputs[id].constraints = conf.constraints;
+            this.mInputs[sId].input = oInput;
+            this.mInputs[sId].type = "number";
+            this.mInputs[sId].constraints = oConf.constraints;
 
-            return input;
+            return oInput;
         },
 
-        _createInput: function(prop, conf) {
-            const id = 'edit_' + prop;
+        /**
+         * create a general input field
+         * @param sProp product prop
+         * @param oConf config
+         * @return {sap.m.Input}
+         * @private
+         */
+        _createInput: function(sProp, oConf) {
+            const sId = 'edit_' + sProp;
 
-            const value = {
-                path: 'product>' + prop,
+            const oValue = {
+                path: 'product>' + sProp,
             };
 
-            const settings = {
+            const oSettings = {
                 valueLiveUpdate: true,
                 liveChange: this.onInputChange.bind(this),
-                value: value,
-                valueStateText: this.getText(conf.errorText)
+                value: oValue,
+                valueStateText: this.getText(oConf.errorText)
             };
 
-            if (conf) {
-                if (conf.type) {
-                    settings['type'] = conf.type;
+            if (oConf) {
+                if (oConf.type) {
+                    oSettings['type'] = oConf.type;
                 }
-                if (conf.description) {
-                    settings['description'] = conf.description
+                if (oConf.description) {
+                    oSettings['description'] = oConf.description
                 }
-                if (conf.value) {
-                    const v = conf.value;
+                if (oConf.value) {
+                    const v = oConf.value;
                     if (v.type) {
-                        value['type'] = v.type;
+                        oValue['type'] = v.type;
                     }
                     if (v.constraints) {
-                        value['constraints'] = v.constraints;
+                        oValue['constraints'] = v.constraints;
                     }
                 }
             }
 
-            const input = new sap.m.Input(id, settings);
+            const oInput = new sap.m.Input(sId, oSettings);
 
-            this.inputs[id].input = input;
-            this.inputs[id].type = "text";
+            this.mInputs[sId].input = oInput;
+            this.mInputs[sId].type = "text";
 
-            return input;
+            return oInput;
         },
 
+        /**
+         * 'curried' function to add a content to a form
+         * @param form
+         * @return {Function}
+         * @private
+         */
         _addToForm: function(form) {
             return function(content) {
                 form.addContent(content);
             };
         },
 
-        _setForms: function(generalContent, technicalContent) {
+        /**
+         * add the given stuff to the changeable forms
+         * @param aGeneralContent
+         * @param aTechnicalContent
+         * @private
+         */
+        _setForms: function(aGeneralContent, aTechnicalContent) {
             // remove everything
             this._clearForms();
 
-            const addToGeneral = this._addToForm(this.generalForm);
-            const addToTechnical = this._addToForm(this.technicalForm);
+            const addToGeneral = this._addToForm(this.oGeneralForm);
+            const addToTechnical = this._addToForm(this.oTechnicalForm);
 
-            _(generalContent)
+            _(aGeneralContent)
                 .forEach(addToGeneral);
 
-            _(technicalContent)
+            _(aTechnicalContent)
                 .forEach(addToTechnical);
         },
 
+        /**
+         * setup view mode
+         * @private
+         */
         _onViewMode: function() {
 
-            const generalContent = [
+            const aGeneralContent = [
                 this._createTitle("description"),
                 this._createLabel("productName"),
                 this._createText("Maktx"),
@@ -308,7 +383,7 @@ sap.ui.define([
                 this._createText("Matkl"),
             ];
 
-            const technicalContent = [
+            const aTechnicalContent = [
                 this._createTitle("dimensions"),
                 this._createLabel("length"),
                 this._createText("{product>Laeng} {product>Meabm}"),
@@ -324,13 +399,17 @@ sap.ui.define([
                 this._createText("{product>Ntgew} {product>Gewei}"),
             ];
 
-            this._setForms(generalContent, technicalContent);
+            this._setForms(aGeneralContent, aTechnicalContent);
         },
 
+        /**
+         * setup edit mode
+         * @private
+         */
         _onEditMode: function() {
             this._initInputs();
 
-            const generalContent = [
+            const aGeneralContent = [
                 this._createTitle("description"),
                 this._createLabel("productName", "Maktx"),
                 this._createInput("Maktx", {
@@ -370,7 +449,7 @@ sap.ui.define([
                 this._createProductCategoryCombo("Matkl"),
             ];
 
-            const technicalContent = [
+            const aTechnicalContent = [
                 this._createTitle("dimensions"),
                 this._createLabel("length", "Laeng"),
                 this._createNumberInput("Laeng", {
@@ -421,7 +500,7 @@ sap.ui.define([
                 }),
             ];
 
-            this._setForms(generalContent, technicalContent);
+            this._setForms(aGeneralContent, aTechnicalContent);
         },
 
         /**
@@ -456,7 +535,7 @@ sap.ui.define([
          * @private
          */
         _onBindingChange : function () {
-            var oView = this.getView(),
+            const oView = this.getView(),
                 oElementBinding = oView.getElementBinding("product");
 
             // No data found
@@ -478,8 +557,8 @@ sap.ui.define([
         onNavButtonPress: function () {
             this.onAbort(function() {
                 //check if there is ui5 history
-                var history = History.getInstance();
-                var previousHash = history.getPreviousHash();
+                const history = History.getInstance();
+                const previousHash = history.getPreviousHash();
 
                 if (previousHash !== undefined) {
                     window.history.go(-1);
@@ -490,37 +569,60 @@ sap.ui.define([
             }.bind(this));
         },
 
-        _setBusy: function(isBusy) {
-            const model = this.getModel("detailView");
+        /**
+         * set busy mode
+         * @param bIsBusy
+         * @private
+         */
+        _setBusy: function(bIsBusy) {
+            const oModel = this.getModel("detailView");
 
-            model.setProperty("/busy", isBusy);
+            oModel.setProperty("/busy", bIsBusy);
         },
 
+        /**
+         * get busy state
+         * @return {boolean}
+         * @private
+         */
         _getBusy: function() {
-            const model = this.getModel("detailView");
+            const oModel = this.getModel("detailView");
 
-            return model.getProperty("/busy");
+            return oModel.getProperty("/busy");
         },
 
-        _setEditMode: function(isEdit) {
-            const editModeModel = this.getModel("editModeView");
+        /**
+         * set edit mode or not
+         * @param bIsEdit
+         * @private
+         */
+        _setEditMode: function(bIsEdit) {
+            const oEditModeModel = this.getModel("editModeView");
 
-            editModeModel.setProperty("/editing", isEdit);
-            editModeModel.setProperty("/changed", false);
+            oEditModeModel.setProperty("/editing", bIsEdit);
+            oEditModeModel.setProperty("/changed", false);
 
-            if (isEdit) {
+            if (bIsEdit) {
                 this._onEditMode();
             } else {
                 this._onViewMode();
             }
         },
 
+        /**
+         * get current edit mode
+         * @return {boolean}
+         * @private
+         */
         _getEditMode: function() {
-            const editModeModel = this.getModel("editModeView");
+            const oEditModeModel = this.getModel("editModeView");
 
-            return editModeModel.getProperty("/editing");
+            return oEditModeModel.getProperty("/editing");
         },
 
+        /**
+         * edit clicked
+         */
         onEdit: function () {
             if (this._getEditMode()) {
                 this.onAbort();
@@ -530,41 +632,50 @@ sap.ui.define([
 
         },
 
-        _validate: function(input, isMandatory, type, constraints) {
-            const valueBinding = input.getBinding("value");
-            const value = type === "combo" ? input.getSelectedKey() : input.getValue();
+        /**
+         * validate an input
+         * @param oInput
+         * @param bIsMandatory
+         * @param sType
+         * @param oConstraints
+         * @return {boolean}
+         * @private
+         */
+        _validate: function(oInput, bIsMandatory, sType, oConstraints) {
+            const oValueBinding = oInput.getBinding("value");
+            const sValue = sType === "combo" ? oInput.getSelectedKey() : oInput.getValue();
 
-            let isValid = false;
+            let bIsValid = false;
 
-            if (!isMandatory || (isMandatory && value)) {
+            if (!bIsMandatory || (bIsMandatory && sValue)) {
                 try {
-                    switch (type) {
+                    switch (sType) {
                         case "text":
-                            valueBinding.getType().validateValue(value);
-                            isValid = true;
+                            oValueBinding.getType().validateValue(sValue);
+                            bIsValid = true;
                             break;
                         case "combo":
-                            const values = input.getKeys();
-                            isValid = values.includes(value) || (!isMandatory && !value);
+                            const values = oInput.getKeys();
+                            bIsValid = values.includes(sValue) || (!bIsMandatory && !sValue);
                             break;
                         case "number":
-                            const num = Number(value);
-                            if (!isNaN(num)) {
-                                if (typeof constraints.minimum !== 'undefined' && num < constraints.minimum) {
+                            const fNum = Number(sValue);
+                            if (!isNaN(fNum)) {
+                                if (typeof oConstraints.minimum !== 'undefined' && fNum < oConstraints.minimum) {
                                     break;
                                 }
-                                if (typeof constraints.maximum !== 'undefined' && num > constraints.maximum) {
+                                if (typeof oConstraints.maximum !== 'undefined' && fNum > oConstraints.maximum) {
                                     break;
                                 }
-                                if (typeof constraints.precision !== 'undefined' && constraints.precision >= 0) {
+                                if (typeof oConstraints.precision !== 'undefined' && oConstraints.precision >= 0) {
 
-                                    const regex = new RegExp("^\\d+(\\.\\d{0," + constraints.precision + "})?$");
-                                    const match = regex.exec(value);
-                                    if (!match) {
+                                    const rRegex = new RegExp("^\\d+(\\.\\d{0," + oConstraints.precision + "})?$");
+                                    const aMatch = rRegex.exec(sValue);
+                                    if (!aMatch) {
                                         break;
                                     }
                                 }
-                                isValid = true;
+                                bIsValid = true;
                             }
                             break;
                         default:
@@ -575,45 +686,52 @@ sap.ui.define([
                 }
             }
 
-            input.setValueState(isValid ? sap.ui.core.ValueState.None : sap.ui.core.ValueState.Error);
-            return isValid;
+            oInput.setValueState(bIsValid ? sap.ui.core.ValueState.None : sap.ui.core.ValueState.Error);
+            return bIsValid;
         },
 
-        onInputChange: function(event) {
-            const re = /^.*edit_([a-zA-Z]{5})$/;
-            const editModel = this.getModel("editModeView");
+        /**
+         * handle input change
+         * @param oEvent
+         */
+        onInputChange: function(oEvent) {
+            const rRe = /^.*edit_([a-zA-Z]{5})$/;
+            const oEditModel = this.getModel("editModeView");
 
-            editModel.setProperty("/changed", true);
+            oEditModel.setProperty("/changed", true);
 
-            const elementId = event.getParameters().id;
+            const sElementId = oEvent.getParameters().id;
             // why is this the text instead of the key on combo boxes?!
-            let value = event.getParameters().value;
+            let sValue = oEvent.getParameters().value;
 
-            const match = re.exec(elementId);
-            if (!match) {
+            const aMatch = rRe.exec(sElementId);
+            if (!aMatch) {
                 return;
             }
-            const prop = match[1];
-            const input = event.getSource();
-            const validationSettings = this.inputs["edit_" + prop];
+            const sProp = aMatch[1];
+            const oInput = oEvent.getSource();
+            const mValidationSettings = this.mInputs["edit_" + sProp];
 
-            if (!this._validate(input, validationSettings.mandatory, validationSettings.type, validationSettings.constraints)) {
+            if (!this._validate(oInput, mValidationSettings.mandatory, mValidationSettings.type, mValidationSettings.constraints)) {
                 // found an error
                 return;
             }
 
-            if (validationSettings.type === "combo") {
-                value = input.getSelectedKey();
+            if (mValidationSettings.type === "combo") {
+                sValue = oInput.getSelectedKey();
             }
 
 
-            const data = editModel.getProperty("/data");
+            const oData = oEditModel.getProperty("/data");
 
-            data[prop] = value;
+            oData[sProp] = sValue;
 
-            editModel.setProperty("/data", data);
+            oEditModel.setProperty("/data", oData);
         },
 
+        /**
+         * save clicked
+         */
         onSave: function() {
             const fnSuccess = function (oData, res) {
                 this._setBusy(false);
@@ -625,50 +743,50 @@ sap.ui.define([
                 this._setBusy(false);
                 this._setEditMode(false);
 
-                let errorMsg = this.getText("genericError");
+                let sErrorMsg = this.getText("genericError");
 
                 try {
-                    errorMsg = JSON.parse(oError.responseText).error.message.value;
+                    sErrorMsg = JSON.parse(oError.responseText).error.message.value;
                 } catch (e) {
                     console.error("unable to retrieve backend server error message", e);
                 }
 
-                MessageBox.error(errorMsg);
+                MessageBox.error(sErrorMsg);
             }.bind(this);
 
             this._setBusy(true);
 
             // validate
-            const isValid = _(this.inputs)
+            const bIsValid = _(this.mInputs)
                 .values()
                 .map(function(v) {
-                    const input = v.input;
-                    const isMandatory = v.mandatory;
-                    const type = v.type;
-                    const constraints = v.constraints;
-                    return this._validate(input, isMandatory, type, constraints);
+                    const oInput = v.input;
+                    const bIsMandatory = v.mandatory;
+                    const sType = v.type;
+                    const oConstraints = v.constraints;
+                    return this._validate(oInput, bIsMandatory, sType, oConstraints);
                 }.bind(this))
                 .every(function (value) {
                     return value;
                 });
 
-            if (!isValid) {
+            if (!bIsValid) {
                 MessageBox.error(this.getText("formInvalid"));
                 this._setBusy(false);
                 return;
             }
 
-            const editModel = this.getModel("editModeView");
-            const productModel = this.getModel("product");
+            const oEditModel = this.getModel("editModeView");
+            const oProductModel = this.getModel("product");
 
-            const productId = editModel.getProperty("/productId");
-            const path = "/ProduktSet('" + productId + "')";
-            const originalData = Object.assign({}, productModel.getData(path));
-            const changes = editModel.getProperty("/data");
-            const changedData = Object.assign(originalData, changes);
+            const sProductId = oEditModel.getProperty("/productId");
+            const sPath = "/ProduktSet('" + sProductId + "')";
+            const oOriginalData = Object.assign({}, oProductModel.getData(sPath));
+            const oChanges = oEditModel.getProperty("/data");
+            const oChangedData = Object.assign(oOriginalData, oChanges);
 
 
-            this.getModel("product").update(path, changedData, {
+            this.getModel("product").update(sPath, oChangedData, {
                 success: fnSuccess,
                 error: fnError,
                 merge: false
@@ -676,27 +794,38 @@ sap.ui.define([
 
         },
 
-        onAbort: function(exec) {
-            const editModel = this.getModel("editModeView");
+        /**
+         * handle abort
+         *
+         * @param {Function} fnExec
+         */
+        onAbort: function(fnExec) {
+            const oEditModel = this.getModel("editModeView");
 
-            const isChanged = editModel.getProperty("/changed");
+            const bIsChanged = oEditModel.getProperty("/changed");
 
-            if (isChanged) {
+            if (bIsChanged) {
                 MessageBox.confirm(this.getText("abortEdit"), {
                     title: this.getText("abortEditTitle"),
-                    onClose: this.handleAbortClose(exec).bind(this)
+                    onClose: this._handleAbortClose(fnExec).bind(this)
                 });
             } else {
-                this._onAbort(exec);
+                this._onAbort(fnExec);
             }
         },
 
-        handleAbortClose(exec) {
+        /**
+         * creates callback to handle abort dialog
+         * @param fnExec
+         * @return {Function}
+         * @private
+         */
+        _handleAbortClose(fnExec) {
 
-            return function(event) {
-                switch (event) {
+            return function(oEvent) {
+                switch (oEvent) {
                     case MessageBox.Action.OK:
-                        this._onAbort(exec);
+                        this._onAbort(fnExec);
                         break;
                     case MessageBox.Action.Cancel:
                         // do nothing
@@ -708,15 +837,20 @@ sap.ui.define([
             };
         },
 
-        _onAbort: function(exec) {
-            const editModel = this.getModel("editModeView");
+        /**
+         * actual abort
+         * @param fnExec
+         * @private
+         */
+        _onAbort: function(fnExec) {
+            const oEditModel = this.getModel("editModeView");
             this.getModel("product").resetChanges();
 
-            const changedData = editModel.setProperty("/data", {});
+            oEditModel.setProperty("/data", {});
             this._setEditMode(false);
 
-            if (typeof exec === "function") {
-                exec();
+            if (typeof fnExec === "function") {
+                fnExec();
             }
         },
     })

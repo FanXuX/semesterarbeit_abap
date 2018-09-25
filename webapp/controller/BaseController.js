@@ -44,23 +44,35 @@ sap.ui.define([
                 return this.getOwnerComponent().getModel("i18n").getResourceBundle();
             },
 
+            /**
+             * gets text from i18n definition
+             *
+             * @param code
+             * @return {string} a string
+             */
             getText: function (code) {
                 return this.getView().getModel("i18n").getResourceBundle().getText(code);
             },
 
-            createProductCategoryModel(mapFunc) {
-                const productCategoryModel = new JSONModel({
+            /**
+             * sets up a product category model from the product>/WarengruppeSet that is being mapped by fnMapFunc to a
+             * needed structure
+             *
+             * @param fnMapFunc
+             */
+            createProductCategoryModel(fnMapFunc) {
+                const oProductCategoryModel = new JSONModel({
                     categories: []
                 });
-                this.setModel(productCategoryModel, "productCategory");
+                this.setModel(oProductCategoryModel, "productCategory");
 
                 const productModel = this.getOwnerComponent().getModel("product");
 
-                productModel.read("/WarengruppeSet", { success: function(data) {
-                        const categories = data.results
-                            .map(mapFunc);
+                productModel.read("/WarengruppeSet", { success: function(oData) {
+                        const aCategories = oData.results
+                            .map(fnMapFunc);
 
-                        this.getModel("productCategory").setProperty("/categories", categories);
+                        this.getModel("productCategory").setProperty("/categories", aCategories);
 
                     }.bind(this)});
 

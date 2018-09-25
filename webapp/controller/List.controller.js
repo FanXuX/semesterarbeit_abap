@@ -13,14 +13,23 @@ sap.ui.define([
 
         onInit: function () {
 
-            const fnGetById = function(id) {
-                return this.getView().byId(id);
+            /**
+             * find a view component by its id
+             * @type {sap.ui.core.Element}
+             */
+            const fnGetById = function(sId) {
+                return this.getView().byId(sId);
             }.bind(this);
 
-            const fnExtractTextFilterValue = function(edit) {
+            /**
+             * retrieve data and filter op from given edit
+             * @param oEdit
+             * @return {object}
+             */
+            const fnExtractTextFilterValue = function(oEdit) {
                 return {
                     value() {
-                        return edit.getValue();
+                        return oEdit.getValue();
                     },
                     op() {
                         return sap.ui.model.FilterOperator.Contains;
@@ -28,10 +37,15 @@ sap.ui.define([
                 };
             };
 
-            const fnExtractComboFilterValue = function(edit) {
+            /**
+             * retrieve data and filter op from given edit
+             * @param oEdit
+             * @return {object}
+             */
+            const fnExtractComboFilterValue = function(oEdit) {
                 return {
                     value() {
-                        return edit.getSelectedKey();
+                        return oEdit.getSelectedKey();
                     },
                     op() {
                         return sap.ui.model.FilterOperator.Contains;
@@ -39,10 +53,15 @@ sap.ui.define([
                 };
             };
 
-            const fnExtractPriceFilterValue = function(combo) {
+            /**
+             * retrieve data and filter op from given combo
+             * @param oCombo
+             * @return {object}
+             */
+            const fnExtractPriceFilterValue = function(oCombo) {
                 return {
                     value() {
-                        switch (combo.getSelectedKey()) {
+                        switch (oCombo.getSelectedKey()) {
                             case "001":
                                 return [0, 50];
                             case "002":
@@ -67,7 +86,7 @@ sap.ui.define([
             this.oStdPrice = fnGetById('slStdPrice');
             this.oTable = fnGetById('idProductsTable');
 
-            this.filterItems = {
+            this.mFilterItems = {
                 'Matnr': fnExtractTextFilterValue(this.oProductId),
                 'Maktx': fnExtractTextFilterValue(this.oProductName),
                 'Matkl': fnExtractComboFilterValue(this.oProductCategory),
@@ -77,39 +96,39 @@ sap.ui.define([
             // prepare functions for grouping
             this.mGroupFunctions = {
                 Matkl: function(oContext) {
-                    var name = oContext.getProperty("Matkl");
+                    const sName = oContext.getProperty("Matkl");
                     return {
-                        key: name,
-                        text: name
+                        key: sName,
+                        text: sName
                     };
                 },
                 Stprs: function(oContext) {
-                    var price = oContext.getProperty("Stprs");
-                    var currencyCode = oContext.getProperty("Waers");
-                    var key, text;
-                    if (price <= 100) {
-                        key = "LE100";
-                        text = "{i18n>stdPrice} <= 100";
-                    } else if (price <= 1000) {
-                        key = "BT100-1000";
-                        text = "100 < {i18n>stdPrice} <= 1000";
+                    const sPrice = oContext.getProperty("Stprs");
+                    const sCurrencyCode = oContext.getProperty("Waers");
+                    let sKey, sText;
+                    if (sPrice <= 100) {
+                        sKey = "LE100";
+                        sText = "{i18n>stdPrice} <= 100";
+                    } else if (sPrice <= 1000) {
+                        sKey = "BT100-1000";
+                        sText = "100 < {i18n>stdPrice} <= 1000";
                     } else {
-                        key = "GT1000";
-                        text = "{i18n>stdPrice} > 1000";
+                        sKey = "GT1000";
+                        sText = "{i18n>stdPrice} > 1000";
                     }
                     return {
-                        key: key,
-                        text: text
+                        key: sKey,
+                        text: sText
                     };
                 }
             };
 
             // create product category data
             this.createProductCategoryModel(function(c) {
-                const name = c.Matkl === "XX" ? this.getText("emptyProductCategory") : c.Matkl;
+                const sName = c.Matkl === "XX" ? this.getText("emptyProductCategory") : c.Matkl;
                 return {
                     key: c.Matkl,
-                    name: name
+                    name: sName
                 };
             }.bind(this));
         },
@@ -128,8 +147,8 @@ sap.ui.define([
          * @param oEvent
          */
         onItemPress : function(oEvent){
-            var oItem = oEvent.getSource();
-            let context = oItem.getBindingContext("product");
+            const oItem = oEvent.getSource();
+            const context = oItem.getBindingContext("product");
             this.getRouter().navTo("detail", {
                 path : context.getModel().getObject(context.getPath()).Matnr
             });
@@ -141,16 +160,16 @@ sap.ui.define([
          */
         handleSortConfirm: function(oEvent) {
 
-            var oView = this.getView();
-            var oTable = oView.byId("idProductsTable");
+            const oView = this.getView();
+            const oTable = oView.byId("idProductsTable");
 
-            var mParams = oEvent.getParameters();
-            var oBinding = oTable.getBinding("items");
+            const mParams = oEvent.getParameters();
+            const oBinding = oTable.getBinding("items");
 
-            var sPath;
-            var bDescending;
-            var vGroup;
-            var aSorters = [];
+            let sPath;
+            let bDescending;
+            let vGroup;
+            const aSorters = [];
             if (mParams.groupItem) {
                 sPath = mParams.groupItem.getKey();
                 bDescending = mParams.groupDescending;
@@ -178,6 +197,9 @@ sap.ui.define([
             this._oDialog.open();
         },
 
+        /**
+         * reset button resets all filter edits and triggers filtering
+         */
         onReset: function() {
             this.oProductId.setValue();
             this.oProductName.setValue();
@@ -192,9 +214,13 @@ sap.ui.define([
          */
         onFilterChange: function() {
 
-            const fnDoFilter = function(filterValueMap){
+            /**
+             * triggers the actual filtering from given filter data and ops
+             * @type {map}
+             */
+            const fnDoFilter = function(mFilterValueMap){
 
-                const filterList = _.map(filterValueMap, function(v, k) {
+                const aFilterList = _.map(mFilterValueMap, function(v, k) {
                     switch (v.op) {
                         case sap.ui.model.FilterOperator.Contains:
                             return new sap.ui.model.Filter(k, v.op, [v.value]);
@@ -208,11 +234,15 @@ sap.ui.define([
                     }
                 });
 
-                this.oTable.getBinding('items').filter(filterList)
+                this.oTable.getBinding('items').filter(aFilterList)
             }.bind(this);
 
-            const fnExtractFilterValues = function(filterItemsMap) {
-                return _.transform(filterItemsMap, function(acc, v, k) {
+            /**
+             * compose filter data from filter items map
+             * @type {map}
+             */
+            const fnExtractFilterValues = function(mFilterItemsMap) {
+                return _.transform(mFilterItemsMap, function(acc, v, k) {
                     if ((_.isArray(v.value()) && !_.isEmpty(v.value()) || (!_.isArray(v.value()) && v.value()))) {
                         acc[k] = {
                             value: v.value(),
@@ -223,7 +253,7 @@ sap.ui.define([
             }.bind(this);
 
 
-            fnDoFilter(fnExtractFilterValues(this.filterItems));
+            fnDoFilter(fnExtractFilterValues(this.mFilterItems));
         }
 
 
