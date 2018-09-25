@@ -204,7 +204,7 @@ sap.ui.define([
             this.oProductId.setValue();
             this.oProductName.setValue();
             this.oProductCategory.setSelectedKey();
-            this.oStdPrice.setValue();
+            this.oStdPrice.setSelectedKey();
 
             this.onFilterChange();
         },
