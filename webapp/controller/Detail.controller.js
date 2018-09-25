@@ -601,6 +601,7 @@ sap.ui.define([
 
             oEditModeModel.setProperty("/editing", bIsEdit);
             oEditModeModel.setProperty("/changed", false);
+            oEditModeModel.setProperty("/data", {});
 
             if (bIsEdit) {
                 this._onEditMode();
@@ -741,7 +742,6 @@ sap.ui.define([
 
             const fnError = function (oError) {
                 this._setBusy(false);
-                this._setEditMode(false);
 
                 let sErrorMsg = this.getText("genericError");
 
