@@ -540,14 +540,15 @@ sap.ui.define([
 
             // No data found
             if (!oElementBinding.getBoundContext()) {
-                // TODO handle missing data
-                // this.getRouter().getTargets().display("notFound");
-                console.log("no data!");
+                MessageBox.alert(this.getText("noDataFound"), {
+                    onClose: function () {
+                        this.getRouter().navTo("list");
+                    }.bind(this)
+                });
                 return;
             }
 
             // data found
-            // this._onViewMode();
             this._setBusy(false)
         },
 
@@ -563,8 +564,7 @@ sap.ui.define([
                 if (previousHash !== undefined) {
                     window.history.go(-1);
                 } else {
-                    var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                    oRouter.navTo("list", {}, true);
+                    this.getRouter().navTo("list");
                 }
             }.bind(this));
         },
