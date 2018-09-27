@@ -1,6 +1,4 @@
-# ui5-template
-
-Template für das Deployment von UI5-Applikationen per grunt task.
+#UI5-Anwendung Produktuebersicht
 
 Um Ihre UI5-Anwendung auf das SAP zu deployen, fuehren Sie bitte folgende Schritte aus:
 
